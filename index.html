@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Умный Свет | Адаптивная система освещения для городских парков</title>
+    <style>
+        /* --- БАЗОВЫЕ НАСТРОЙКИ И ПЕРЕМЕННЫЕ --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+        :root {
+            --bg-dark: #050505;
+            --bg-card: rgba(20, 20, 20, 0.6);
+            --accent-cyan: #00d2ff;
+            --accent-blue: #3a7bd5;
+            --accent-glow: rgba(0, 210, 255, 0.3);
+            --accent-red: #ff3b3b;
+            --accent-green: #00e676;
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 210, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(58, 123, 213, 0.05) 0%, transparent 40%);
+        }
+
+        /* --- АНИМАЦИИ ПОЯВЛЕНИЯ --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- НАВИГАЦИЯ --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            padding: 1rem 5%;
+            background: rgba(5, 5, 5, 0.95);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: pulse 2s infinite;
+        }
+
+        .logo span { color: var(--accent-cyan); }
+
+        .nav-links { display: flex; gap: 2rem; }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-cyan);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: #fff; }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- ГЛАВНЫЙ ЭКРАН (HERO) --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 650px;
+            z-index: 2;
+            padding-top: 80px;
+        }
+
+        .hero-tagline {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: var(--accent-cyan);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 550px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+        }
+
+        .stat-item h4 { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .stat-item p { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- ВИЗУАЛЬНАЯ ЧАСТЬ HERO (СИМУЛЯЦИЯ) --- */
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            min-height: 600px;
+        }
+
+        .lamp-container {
+            position: relative;
+            width: 300px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .lamp-body {
+            width: 120px;
+            height: 200px;
+            background: linear-gradient(180deg, #222, #111);
+            border-radius: 20px 20px 0 0;
+            border: 2px solid #333;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .solar-panel {
+            width: 100px;
+            height: 60px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 10px, #222 10px, #222 11px),
+                              repeating-linear-gradient(90deg, transparent, transparent 10px, #222 10px, #222 11px);
+            position: relative;
+        }
+
+        .pir-sensor {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .pir-sensor.active {
+            background: var(--accent-red);
+            box-shadow: 0 0 15px var(--accent-red);
+            animation: blink 0.3s infinite alternate;
+        }
+
+        .led-strip {
+            width: 80px;
+            height: 15px;
+            background: #111;
+            border-radius: 5px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .led-strip::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            background: var(--accent-cyan);
+            opacity: 0.3;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .light-cone {
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 300px solid rgba(0, 210, 255, 0.03);
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 1;
+            pointer-events: none;
+            filter: blur(4px);
+        }
+
+        .lamp-container.bright .led-strip::after {
+            opacity: 1;
+            box-shadow: 0 0 40px var(--accent-cyan), 0 0 80px var(--accent-cyan);
+        }
+
+        .lamp-container.bright .light-cone {
+            border-top-color: rgba(0, 210, 255, 0.25);
+            transform: translateX(-50%) scale(1.1);
+            filter: blur(15px);
+        }
+
+        .pedestrian {
+            position: absolute;
+            top: 480px;
+            left: -50px;
+            width: 20px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px 10px 0 0;
+            opacity: 0;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+            transition: opacity 0.3s;
+        }
+
+        .pedestrian::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 2px;
+            width: 16px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 5px;
+        }
+
+        .lamp-container.moving .pedestrian {
+            opacity: 1;
+            animation: walk 2.5s linear forwards;
+        }
+
+        .lamp-pole {
+            width: 20px;
+            height: 300px;
+            background: linear-gradient(90deg, #111, #222, #111);
+            border-left: 2px solid #333;
+            border-right: 2px solid #333;
+        }
+
+        .sim-btn {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 20;
+            white-space: nowrap;
+        }
+
+        .sim-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .sim-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+        .timer-display {
+            position: absolute;
+            bottom: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .timer-display.active { opacity: 1; }
+
+        /* --- СЕКЦИЯ ПРОБЛЕМЫ И РЕШЕНИЯ --- */
+        .problem-section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .problem-text h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .problem-quote {
+            padding: 2rem;
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 0 16px 16px 0;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        /* --- СЕКЦИЯ ХАРАКТЕРИСТИК --- */
+        .specs-section {
+            padding: 8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+        .section-header p { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .spec-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .spec-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 210, 255, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .spec-card:hover::before { opacity: 1; }
+
+        .spec-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 210, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .spec-icon {
+            width: 50px; height: 50px;
+            background: rgba(0, 210, 255, 0.1);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--accent-cyan);
+        }
+
+        .spec-card h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        .spec-value { font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 0.5rem; }
+        .spec-desc { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* --- СЕКЦИЯ АЛГОРИТМА (TIMELINE) --- */
+        .logic-section {
+            background: linear-gradient(180deg, transparent, rgba(0, 210, 255, 0.02), transparent);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8rem 5%;
+        }
+
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px; background: var(--border-color);
+            top: 0; bottom: 0; left: 50%; margin-left: -1px;
+        }
+
+        .timeline-item { padding: 10px 40px; position: relative; width: 50%; }
+        .timeline-item.left { left: 0; }
+        .timeline-item.right { left: 50%; }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            right: -10px; background-color: var(--bg-dark);
+            border: 4px solid var(--accent-cyan);
+            top: 15px; border-radius: 50%; z-index: 1;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .timeline-item.right::after { left: -10px; }
+
+        .timeline-content {
+            padding: 2rem; background: var(--bg-card);
+            border: 1px solid var(--border-color); border-radius: 16px;
+            position: relative; transition: var(--transition);
+        }
+
+        .timeline-content:hover { border-color: var(--accent-cyan); transform: scale(1.02); }
+        .timeline-content h3 { color: #fff; margin-bottom: 0.5rem; }
+        .timeline-content p { color: var(--text-muted); font-size: 0.95rem; }
+
+        .timeline-badge {
+            display: inline-block; padding: 0.3rem 0.8rem;
+            border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; margin-bottom: 1rem;
+        }
+
+        .badge-dim { background: rgba(255, 255, 255, 0.1); color: #ccc; }
+        .badge-bright { background: rgba(0, 210, 255, 0.2); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+        .badge-green { background: rgba(0, 230, 118, 0.1); color: var(--accent-green); border: 1px solid var(--accent-green); }
+
+        /* ========================================================= */
+        /* === СЕКЦИЯ: БЕГУЩАЯ ВОЛНА (MESH-СЕТЬ) === */
+        /* ========================================================= */
+        .wave-section {
+            padding: 8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave-demo {
+            position: relative;
+            height: 420px;
+            background: linear-gradient(180deg, transparent, rgba(0, 210, 255, 0.03));
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 0 5% 0;
+            overflow: hidden;
+        }
+
+        .wave-demo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            opacity: 0.5;
+        }
+
+        .wave-lamp {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .wave-lamp-head {
+            width: 40px;
+            height: 25px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            z-index: 3;
+            transition: all 0.3s ease;
+        }
+
+        .wave-lamp-head::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 5px;
+            background: var(--accent-cyan);
+            border-radius: 0 0 4px 4px;
+            opacity: 0.2;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 5px var(--accent-cyan);
+        }
+
+        .wave-lamp-pole {
+            width: 4px;
+            height: 100px;
+            background: linear-gradient(90deg, #111, #333, #111);
+            border-radius: 2px;
+        }
+
+        .wave-light-cone {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-top: 150px solid rgba(0, 210, 255, 0.02);
+            transition: all 0.5s ease;
+            pointer-events: none;
+            filter: blur(8px);
+            z-index: 1;
+        }
+
+        .wave-lamp.active .wave-lamp-head::before {
+            opacity: 1;
+            box-shadow: 0 0 25px var(--accent-cyan), 0 0 50px var(--accent-cyan);
+        }
+
+        .wave-lamp.active .wave-light-cone {
+            border-top-color: rgba(0, 210, 255, 0.25);
+            filter: blur(15px);
+        }
+
+        .wave-lamp.preparing .wave-lamp-head::before {
+            opacity: 0.7;
+            box-shadow: 0 0 15px var(--accent-cyan);
+            animation: preparePulse 1s infinite alternate;
+        }
+
+        .wave-lamp.preparing .wave-light-cone {
+            border-top-color: rgba(0, 210, 255, 0.1);
+        }
+
+        /* --- МНОЖЕСТВЕННЫЕ ПЕШЕХОДЫ --- */
+        .wave-pedestrian {
+            position: absolute;
+            bottom: 0;
+            width: 14px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 7px 7px 0 0;
+            z-index: 10;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .wave-pedestrian::after {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 1px;
+            width: 12px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 4px;
+        }
+
+        /* Одиночка — быстрый, слева направо */
+        .pedestrian-solo {
+            animation: walkRight 6s linear infinite;
+            animation-delay: 0s;
+        }
+
+        /* Пара — два человека, справа налево, медленнее */
+        .pedestrian-pair-1 {
+            animation: walkLeft 8s linear infinite;
+            animation-delay: 1.5s;
+        }
+        .pedestrian-pair-2 {
+            animation: walkLeft 8s linear infinite;
+            animation-delay: 1.7s; /* Чуть позади первого */
+        }
+
+        /* Медленный прохожий с собакой */
+        .pedestrian-slow {
+            animation: walkRight 9s linear infinite;
+            animation-delay: 3s;
+            background: rgba(255, 200, 200, 0.9);
+        }
+
+        /* Собака — бежит впереди хозяина */
+        .dog {
+            position: absolute;
+            bottom: 0;
+            width: 16px;
+            height: 10px;
+            background: rgba(200, 180, 150, 0.9);
+            border-radius: 8px 8px 0 0;
+            z-index: 10;
+            filter: drop-shadow(0 0 6px rgba(200,180,150,0.5));
+            opacity: 0;
+            pointer-events: none;
+            animation: walkRight 9s linear infinite;
+            animation-delay: 2.5s; /* Собака бежит впереди */
+        }
+
+        .dog::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: -4px;
+            width: 6px;
+            height: 6px;
+            background: inherit;
+            border-radius: 50%;
+        }
+        .dog::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -8px;
+            width: 4px;
+            height: 8px;
+            background: inherit;
+            border-radius: 2px;
+            transform: rotate(-20deg);
+        }
+
+        .wave-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .wave-btn {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wave-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .wave-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .wave-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .wave-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .wave-info-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+        }
+
+        .wave-info-dot.dim { background: #333; box-shadow: none; }
+        .wave-info-dot.prep { background: rgba(0, 210, 255, 0.6); }
+
+        /* Анимации пешеходов */
+        @keyframes walkRight {
+            0% { left: -30px; opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { left: calc(100% + 30px); opacity: 0; }
+        }
+
+        @keyframes walkLeft {
+            0% { right: -30px; opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { right: calc(100% + 30px); opacity: 0; }
+        }
+
+        @keyframes preparePulse {
+            from { opacity: 0.4; }
+            to { opacity: 0.9; }
+        }
+
+        /* ========================================================= */
+
+        /* --- СЕКЦИЯ ЭФФЕКТИВНОСТИ И ОПЫТА --- */
+        .economy-section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .economy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .economy-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: var(--transition);
+        }
+
+        .economy-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-5px);
+        }
+
+        .economy-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .economy-card ul { list-style: none; }
+
+        .economy-card li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .economy-card li:last-child { border-bottom: none; }
+
+        .economy-card .value {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .case-study {
+            padding: 1.5rem;
+            background: rgba(0, 210, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0, 210, 255, 0.1);
+        }
+
+        .case-study h4 { color: #fff; margin-bottom: 0.3rem; font-size: 1rem; }
+        .case-study p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* --- СЕКЦИЯ ДОКУМЕНТАЦИИ --- */
+        .docs-section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; }
+
+        .tab-btn {
+            padding: 1rem 2rem; background: transparent;
+            border: 1px solid var(--border-color); color: var(--text-muted);
+            border-radius: 50px; font-family: inherit; font-weight: 600;
+            cursor: pointer; transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-cyan); color: #000;
+            border-color: var(--accent-cyan); box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .image-container {
+            max-width: 900px; margin: 0 auto; border-radius: 20px;
+            overflow: hidden; border: 1px solid var(--border-color);
+            background: #000; position: relative; min-height: 300px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .image-container img { width: 100%; height: auto; display: block; opacity: 0.9; transition: var(--transition); }
+        .image-container:hover img { opacity: 1; }
+
+        .img-placeholder {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #555; font-size: 0.9rem; text-align: center; padding: 2rem; z-index: 0;
+        }
+
+        .img-placeholder svg { width: 40px; height: 40px; fill: #333; margin-bottom: 1rem; }
+        .image-container img[src=""] { display: none; }
+
+        /* --- ПАНЕЛЬ ЗАГРУЗКИ КАРТИНОК --- */
+        .upload-panel {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px); padding: 1rem; border-radius: 12px;
+            z-index: 2000; display: flex; flex-direction: column; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: var(--transition);
+        }
+
+        .upload-panel h4 { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+
+        .upload-btn {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.6rem 1rem; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color); border-radius: 8px;
+            color: #fff; font-size: 0.85rem; cursor: pointer;
+            transition: var(--transition); font-family: inherit;
+        }
+
+        .upload-btn:hover { background: rgba(0, 210, 255, 0.1); border-color: var(--accent-cyan); }
+        .upload-btn span { color: var(--accent-cyan); font-weight: 600; margin-left: 10px; }
+        .upload-btn input[type="file"] { display: none; }
+
+        /* --- ФУТЕР --- */
+        footer { padding: 4rem 5% 2rem; background: #030303; border-top: 1px solid var(--border-color); text-align: center; }
+        .footer-logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 1rem; color: #fff; }
+        .footer-logo span { color: var(--accent-cyan); }
+        .footer-text { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+        .copyright { color: #444; font-size: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 2rem; }
+
+        /* --- АДАПТИВНОСТЬ --- */
+        @media (max-width: 992px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 120px; padding-bottom: 60px; }
+            .hero-content { max-width: 100%; }
+            .hero-description { margin: 0 auto 2rem; }
+            .hero-stats { justify-content: center; }
+            .hero-visual { margin-top: 4rem; }
+            .nav-links { display: none; }
+            
+            .problem-grid { grid-template-columns: 1fr; }
+            .economy-grid { grid-template-columns: 1fr; }
+            
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-item.right { left: 0%; }
+            .timeline-item.left::after, .timeline-item.right::after { left: 21px; }
+            
+            .upload-panel { bottom: 10px; right: 10px; left: 10px; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; }
+            .upload-panel h4 { width: 100%; text-align: center; margin-bottom: 0; }
+            .upload-btn { flex: 1; min-width: 140px; justify-content: center; }
+            .upload-btn span { display: none; }
+            
+            .wave-demo { height: 320px; }
+            .wave-light-cone { border-left: 40px solid transparent; border-right: 40px solid transparent; border-top: 100px solid rgba(0, 210, 255, 0.02); }
+        }
+
+        @media (max-width: 576px) {
+            .hero-stats { flex-direction: column; gap: 1.5rem; align-items: center; }
+            .tabs { flex-direction: column; align-items: center; }
+            .tab-btn { width: 100%; max-width: 300px; }
+            .sim-btn { font-size: 0.75rem; padding: 0.8rem 1.2rem; }
+            .wave-demo { height: 260px; padding: 0 2%; }
+            .wave-lamp-head { width: 30px; height: 20px; }
+            .wave-lamp-pole { height: 70px; }
+            .wave-light-cone { border-left: 25px solid transparent; border-right: 25px solid transparent; border-top: 70px solid rgba(0, 210, 255, 0.02); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 210, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
+        }
+
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0.3; }
+        }
+
+        @keyframes walk {
+            0% { left: -50px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 110%; opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- НАВИГАЦИЯ -->
+    <nav id="navbar">
+        <div class="logo">
+            <div class="logo-dot"></div>
+            УМНЫЙ<span>СВЕТ</span>
+        </div>
+        <div class="nav-links">
+            <a href="#problem">Проблема</a>
+            <a href="#specs">Характеристики</a>
+            <a href="#logic">Алгоритм</a>
+            <a href="#wave">Сеть</a>
+            <a href="#economy">Эффективность</a>
+            <a href="#docs">Схемы</a>
+        </div>
+    </nav>
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <header class="hero">
+        <div class="hero-content reveal">
+            <div class="hero-tagline">Адаптивная система освещения</div>
+            <h1>Умный свет для <span>городских парков</span></h1>
+            <p class="hero-description">
+                Повышение безопасности и комфорта посетителей при снижении энергопотребления 
+                за счет интеллектуальной системы освещения, реагирующей на движение.
+            </p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <h4>до 70%</h4>
+                    <p>Экономия энергии</p>
+                </div>
+                <div class="stat-item">
+                    <h4>2-3 года</h4>
+                    <p>Окупаемость</p>
+                </div>
+                <div class="stat-item">
+                    <h4>30%</h4>
+                    <p>Дежурный режим</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual reveal">
+            <div class="lamp-container" id="lampSim">
+                <div class="light-cone"></div>
+                
+                <div class="lamp-body">
+                    <div class="solar-panel">
+                        <div class="pir-sensor" id="pirSensor"></div>
+                    </div>
+                    <div class="led-strip" id="ledStrip"></div>
+                </div>
+                
+                <div class="lamp-pole"></div>
+                <div class="pedestrian" id="pedestrian"></div>
+                
+                <button class="sim-btn" id="simBtn">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                    Симулировать движение
+                </button>
+                
+                <div class="timer-display" id="timerDisplay">Возврат в экономию: 3с</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- СЕКЦИЯ ПРОБЛЕМЫ -->
+    <section id="problem" class="problem-section">
+        <div class="problem-grid">
+            <div class="problem-text reveal">
+                <h2>Актуальность</h2>
+                <p>Современные городские парки сталкиваются с противоречием: с одной стороны, необходимо обеспечить безопасность и комфорт посетителей в темное время суток, с другой — растущие тарифы на электроэнергию и требования экологии диктуют необходимость экономии.</p>
+                <p>Традиционное освещение работает по фиксированному графику: оно либо горит в полную силу всю ночь (перерасход энергии, световое загрязнение), либо выключается рано (риск травм и нападений).</p>
+                <div class="problem-quote">
+                    «Адаптивное освещение решает эту дилемму: свет есть всегда, но он становится ярким только там и тогда, где и когда это действительно нужно.»
+                </div>
+            </div>
+            <div class="problem-text reveal">
+                <h2>Решение</h2>
+                <p>Установка светодиодных светильников, оснащенных интегрированными датчиками движения (микроволновыми или инфракрасными) и модулями связи.</p>
+                <p>Светильники объединяются в единую сеть, что позволяет создавать «бегущую волну» света перед идущим человеком, обеспечивая максимальный комфорт и безопасность.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ ХАРАКТЕРИСТИК -->
+    <section id="specs" class="specs-section">
+        <div class="section-header reveal">
+            <h2>Технические характеристики</h2>
+            <p>Высококачественные компоненты для максимальной эффективности и долговечности</p>
+        </div>
+
+        <div class="specs-grid">
+            <div class="spec-card reveal">
+                <div class="spec-icon">☀️</div>
+                <h3>Солнечная панель</h3>
+                <div class="spec-value">7V / 3.5W</div>
+                <p class="spec-desc">Эффективное преобразование солнечной энергии даже в пасмурную погоду.</p>
+            </div>
+            <div class="spec-card reveal" style="transition-delay: 0.1s;">
+                <div class="spec-icon">🔋</div>
+                <h3>Аккумулятор</h3>
+                <div class="spec-value">18650 Li-Ion</div>
+                <p class="spec-desc">3.7V, 2200mAh. Обеспечивает до 3 дней автономной работы без подзарядки.</p>
+            </div>
+            <div class="spec-card reveal" style="transition-delay: 0.2s;">
+                <div class="spec-icon">⚡</div>
+                <h3>Контроллер</h3>
+                <div class="spec-value">TP4056</div>
+                <p class="spec-desc">Модуль защиты и стабилизации заряда с индикацией состояния.</p>
+            </div>
+            <div class="spec-card reveal" style="transition-delay: 0.3s;">
+                <div class="spec-icon">💡</div>
+                <h3>Светодиоды</h3>
+                <div class="spec-value">4V LED</div>
+                <p class="spec-desc">Яркая SMD-лента с низким энергопотреблением и широким углом свечения.</p>
+            </div>
+            <div class="spec-card reveal" style="transition-delay: 0.4s;">
+                <div class="spec-icon">🔌</div>
+                <h3>Коммутация</h3>
+                <div class="spec-value">BC557 PNP</div>
+                <p class="spec-desc">Быстрое переключение режимов яркости без задержек и мерцания.</p>
+            </div>
+            <div class="spec-card reveal" style="transition-delay: 0.5s;">
+                <div class="spec-icon">📡</div>
+                <h3>Датчик движения</h3>
+                <div class="spec-value">PIR Сенсор</div>
+                <p class="spec-desc">Высокая чувствительность, обнаружение на расстоянии до 10–15 метров.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ АЛГОРИТМА -->
+    <section id="logic" class="logic-section">
+        <div class="section-header reveal">
+            <h2>Алгоритм работы</h2>
+            <p>Три режима для максимальной эффективности</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item left reveal">
+                <div class="timeline-content">
+                    <div class="timeline-badge badge-dim">Режим 1</div>
+                    <h3>Дежурный режим (30% яркости)</h3>
+                    <p>В отсутствие людей фонари горят тускло, создавая лишь контур дорожек. Это экономит энергию и снижает засветку неба.</p>
+                </div>
+            </div>
+            <div class="timeline-item right reveal">
+                <div class="timeline-content">
+                    <div class="timeline-badge badge-bright">Режим 2</div>
+                    <h3>Режим активации (100% яркости)</h3>
+                    <p>При приближении человека на 10–15 метров датчик подает сигнал, и светильник мгновенно увеличивает яркость.</p>
+                </div>
+            </div>
+            <div class="timeline-item left reveal">
+                <div class="timeline-content">
+                    <div class="timeline-badge badge-green">Режим 3</div>
+                    <h3>Эффект «шлейфа»</h3>
+                    <p>Светильники объединены в сеть. При активации одного фонаря соседние также готовятся к включению, создавая плавную «бегущую волну» света перед идущим.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- СЕКЦИЯ: БЕГУЩАЯ ВОЛНА (MESH-СЕТЬ) -->
+    <!-- ========================================================= -->
+    <section id="wave" class="wave-section">
+        <div class="section-header reveal">
+            <h2>Эффект «бегущей волны»</h2>
+            <p>Светильники объединены в mesh-сеть и взаимодействуют друг с другом. Когда человек идёт по аллее, свет «бежит» перед ним, обеспечивая максимальный комфорт и безопасность.</p>
+        </div>
+
+        <div class="wave-demo reveal" id="waveDemo">
+            <!-- 5 фонарей в сети -->
+            <div class="wave-lamp" data-index="0">
+                <div class="wave-lamp-head"></div>
+                <div class="wave-lamp-pole"></div>
+                <div class="wave-light-cone"></div>
+            </div>
+            <div class="wave-lamp" data-index="1">
+                <div class="wave-lamp-head"></div>
+                <div class="wave-lamp-pole"></div>
+                <div class="wave-light-cone"></div>
+            </div>
+            <div class="wave-lamp" data-index="2">
+                <div class="wave-lamp-head"></div>
+                <div class="wave-lamp-pole"></div>
+                <div class="wave-light-cone"></div>
+            </div>
+            <div class="wave-lamp" data-index="3">
+                <div class="wave-lamp-head"></div>
+                <div class="wave-lamp-pole"></div>
+                <div class="wave-light-cone"></div>
+            </div>
+            <div class="wave-lamp" data-index="4">
+                <div class="wave-lamp-head"></div>
+                <div class="wave-lamp-pole"></div>
+                <div class="wave-light-cone"></div>
+            </div>
+
+            <!-- Множественные пешеходы -->
+            <div class="wave-pedestrian pedestrian-solo" id="pedSolo"></div>
+            <div class="wave-pedestrian pedestrian-pair-1" id="pedPair1"></div>
+            <div class="wave-pedestrian pedestrian-pair-2" id="pedPair2"></div>
+            <div class="wave-pedestrian pedestrian-slow" id="pedSlow"></div>
+            <div class="dog" id="dog"></div>
+        </div>
+
+        <div class="wave-controls reveal">
+            <button class="wave-btn" id="waveBtn">
+                <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                Пауза
+            </button>
+        </div>
+
+        <div class="wave-info reveal">
+            <div class="wave-info-item">
+                <div class="wave-info-dot dim"></div>
+                <span>Дежурный режим (30%)</span>
+            </div>
+            <div class="wave-info-item">
+                <div class="wave-info-dot prep"></div>
+                <span>Готовность к включению</span>
+            </div>
+            <div class="wave-info-item">
+                <div class="wave-info-dot"></div>
+                <span>Активный режим (100%)</span>
+            </div>
+        </div>
+    </section>
+    <!-- ========================================================= -->
+
+    <!-- СЕКЦИЯ ЭФФЕКТИВНОСТИ И ОПЫТА -->
+    <section id="economy" class="economy-section">
+        <div class="section-header reveal">
+            <h2>Эффективность и опыт</h2>
+            <p>Сравнение с традиционным освещением и мировые примеры</p>
+        </div>
+
+        <div class="economy-grid">
+            <div class="economy-card reveal">
+                <h3>💰 Сравнение эффективности</h3>
+                <ul>
+                    <li>Энергопотребление <span class="value">-50–70%</span></li>
+                    <li>Безопасность <span class="value">Яркий свет в зоне человека</span></li>
+                    <li>Экология <span class="value">Мин. световое загрязнение</span></li>
+                    <li>Срок службы LED <span class="value">Увеличенный</span></li>
+                    <li>Стоимость светильников <span class="value">+30–40%</span></li>
+                    <li>Срок окупаемости <span class="value">2–3 года</span></li>
+                </ul>
+            </div>
+
+            <div class="economy-card reveal">
+                <h3>🌍 Мировой опыт</h3>
+                <div class="case-study">
+                    <h4>Берлин, парк Hasenheide</h4>
+                    <p>Система «Mitlaufendes Licht» показала экономию 60% и высокую оценку пользователей.</p>
+                </div>
+                <div class="case-study">
+                    <h4>Анадырь (Россия)</h4>
+                    <p>Внедрение умных светильников с изменяемой яркостью дало экономию до 73%.</p>
+                </div>
+                <div class="case-study">
+                    <h4>Норвегия, Осло</h4>
+                    <p>Использование радарных датчиков на велодорожках для безопасности в зимний период.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ ДОКУМЕНТАЦИИ -->
+    <section id="docs" class="docs-section">
+        <div class="section-header reveal">
+            <h2>Техническая документация</h2>
+            <p>Схемы подключения и чертежи корпуса</p>
+        </div>
+
+        <div class="tabs reveal">
+            <button class="tab-btn active" onclick="switchTab(event, 'tab-schema')">Принципиальная схема</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-drawing')">Чертеж корпуса</button>
+        </div>
+
+        <div id="tab-schema" class="tab-content active reveal">
+            <div class="image-container">
+                <div class="img-placeholder" id="placeholder-schema">
+                    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                    <p>Изображение схемы не загружено.<br>Используйте панель справа, чтобы выбрать файл.</p>
+                </div>
+                <img id="img-schema" src="" alt="Принципиальная схема">
+            </div>
+        </div>
+
+        <div id="tab-drawing" class="tab-content reveal">
+            <div class="image-container">
+                <div class="img-placeholder" id="placeholder-drawing">
+                    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                    <p>Чертеж корпуса не загружен.<br>Используйте панель справа, чтобы выбрать файл.</p>
+                </div>
+                <img id="img-drawing" src="" alt="Чертеж корпуса">
+            </div>
+        </div>
+    </section>
+
+    <!-- ПАНЕЛЬ ЗАГРУЗКИ КАРТИНОК -->
+    <div class="upload-panel" id="uploadPanel">
+        <h4>Управление фото</h4>
+        <label class="upload-btn">
+            Загрузить Схему
+            <span>+</span>
+            <input type="file" accept="image/*" id="upload-schema" onchange="loadImage(event, 'img-schema', 'placeholder-schema')">
+        </label>
+        <label class="upload-btn">
+            Загрузить Чертеж
+            <span>+</span>
+            <input type="file" accept="image/*" id="upload-drawing" onchange="loadImage(event, 'img-drawing', 'placeholder-drawing')">
+        </label>
+    </div>
+
+    <!-- ФУТЕР -->
+    <footer>
+        <div class="footer-logo">УМНЫЙ<span>СВЕТ</span></div>
+        <p class="footer-text">Адаптивная система освещения для городских парков. Инвестиции в качество жизни.</p>
+        <div class="copyright">
+            &copy; 2026 Умный Свет. Все права защищены.
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // --- 1. ЭФФЕКТ СКРОЛЛА НАВИГАЦИИ ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // --- 2. АНИМАЦИЯ ПОЯВЛЕНИЯ ЭЛЕМЕНТОВ (REVEAL) ---
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    if (entry.target.classList.contains('spec-card')) {
+                        initCardHover(entry.target);
+                    }
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- 3. ЭФФЕКТ 3D ПОДСВЕТКИ КАРТОЧЕК ---
+        function initCardHover(card) {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        }
+
+        // --- 4. ПЕРЕКЛЮЧЕНИЕ ТАБОВ (ГАЛЕРЕЯ) ---
+        function switchTab(event, tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // --- 5. СИМУЛЯЦИЯ РАБОТЫ ФОНАРЯ (HERO) ---
+        const simBtn = document.getElementById('simBtn');
+        const lampSim = document.getElementById('lampSim');
+        const pirSensor = document.getElementById('pirSensor');
+        const timerDisplay = document.getElementById('timerDisplay');
+        
+        let isBright = false;
+        let countdownInterval;
+        let returnTimeout;
+
+        function resetToEco() {
+            lampSim.classList.remove('bright');
+            pirSensor.classList.remove('active');
+            isBright = false;
+            timerDisplay.classList.remove('active');
+            
+            simBtn.innerHTML = `
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                Симулировать движение
+            `;
+        }
+
+        simBtn.addEventListener('click', () => {
+            clearInterval(countdownInterval);
+            clearTimeout(returnTimeout);
+
+            if (isBright) {
+                startTimer();
+            } else {
+                isBright = true;
+                lampSim.classList.add('moving');
+                pirSensor.classList.add('active');
+                
+                setTimeout(() => {
+                    lampSim.classList.add('bright');
+                }, 500);
+
+                simBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    Движение обнаружено!
+                `;
+
+                startTimer();
+
+                setTimeout(() => {
+                    lampSim.classList.remove('moving');
+                }, 2500);
+            }
+        });
+
+        function startTimer() {
+            let timeLeft = 3;
+            timerDisplay.classList.add('active');
+            timerDisplay.textContent = `Возврат в экономию: ${timeLeft}с`;
+
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    timerDisplay.textContent = `Возврат в экономию: ${timeLeft}с`;
+                } else {
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+
+            returnTimeout = setTimeout(() => {
+                resetToEco();
+            }, timeLeft * 1000);
+        }
+
+        // =========================================================
+        // --- 6. ДЕМОНСТРАЦИЯ «БЕГУЩЕЙ ВОЛНЫ» (ПОСТОЯННЫЙ ЦИКЛ) ---
+        // =========================================================
+        const waveDemo = document.getElementById('waveDemo');
+        const waveBtn = document.getElementById('waveBtn');
+        const waveLamps = document.querySelectorAll('.wave-lamp');
+        
+        let isPaused = false;
+        let waveAnimationFrame = null;
+        let startTime = performance.now();
+        let pausedTime = 0;
+
+        // Сценарий: пешеходы идут с разными скоростями
+        // Каждый пешеход описывается: startTime (мс), duration (мс), direction (1=слева-направо, -1=справа-налево)
+        const pedestrians = [
+            { id: 'pedSolo', startTime: 0, duration: 6000, direction: 1 },       // быстрый одиночка
+            { id: 'pedPair1', startTime: 1500, duration: 8000, direction: -1 },   // пара (1)
+            { id: 'pedPair2', startTime: 1700, duration: 8000, direction: -1 },   // пара (2)
+            { id: 'pedSlow', startTime: 3000, duration: 9000, direction: 1 },     // медленный
+            { id: 'dog', startTime: 2500, duration: 9000, direction: 1 }          // собака впереди
+        ];
+
+        // Позиции фонарей по горизонтали (примерно, в %)
+        const lampPositions = [10, 30, 50, 70, 90];
+        
+        // Длительность цикла (должна быть больше самого долгого пешехода)
+        const CYCLE_DURATION = 10000; // 10 секунд
+
+        // Сброс фонарей в дежурный режим
+        function resetWaveLamps() {
+            waveLamps.forEach(lamp => {
+                lamp.classList.remove('active', 'preparing');
+            });
+        }
+
+        // Обновление состояния фонарей в зависимости от пешеходов
+        function updateLamps(currentTime) {
+            // Для каждого фонаря проверяем, есть ли рядом пешеход
+            waveLamps.forEach((lamp, index) => {
+                const lampPos = lampPositions[index];
+                let isActive = false;
+                let isPreparing = false;
+
+                // Проверяем каждого пешехода
+                pedestrians.forEach(ped => {
+                    // Определяем, где находится пешеход в данный момент (0 = начало, 1 = конец)
+                    const elapsed = currentTime - ped.startTime;
+                    // Нормализуем время в диапазон [0, 1], учитывая зацикливание
+                    const cycleTime = ((elapsed % CYCLE_DURATION) + CYCLE_DURATION) % CYCLE_DURATION;
+                    
+                    if (cycleTime > ped.duration) return; // Пешеход ещё не появился или уже ушёл
+                    
+                    const progress = cycleTime / ped.duration; // 0..1
+                    
+                    // Позиция пешехода в % (0..100)
+                    let pedPos;
+                    if (ped.direction === 1) {
+                        pedPos = -5 + progress * 110; // Слева направо
+                    } else {
+                        pedPos = 105 - progress * 110; // Справа налево
+                    }
+
+                    // Насколько близко пешеход к фонарю (по горизонтали)
+                    const distance = Math.abs(pedPos - lampPos);
+
+                    // Если пешеход в радиусе 12% от фонаря — фонарь активен
+                    if (distance < 12) {
+                        isActive = true;
+                    }
+                    // Если пешеход в радиусе 25% и приближается — фонарь готовится
+                    else if (distance < 25) {
+                        // Проверяем, приближается ли пешеход
+                        const prevProgress = (cycleTime - 100) / ped.duration;
+                        if (prevProgress > 0) {
+                            const prevPos = ped.direction === 1 
+                                ? -5 + prevProgress * 110 
+                                : 105 - prevProgress * 110;
+                            const prevDistance = Math.abs(prevPos - lampPos);
+                            if (distance < prevDistance) {
+                                isPreparing = true;
+                            }
+                        } else {
+                            isPreparing = true;
+                        }
+                    }
+                });
+
+                // Применяем классы
+                if (isActive) {
+                    lamp.classList.add('active');
+                    lamp.classList.remove('preparing');
+                } else if (isPreparing) {
+                    lamp.classList.add('preparing');
+                    lamp.classList.remove('active');
+                } else {
+                    lamp.classList.remove('active', 'preparing');
+                }
+            });
+        }
+
+        // Главный цикл анимации
+        function waveLoop(now) {
+            if (isPaused) return;
+            
+            const elapsed = now - startTime;
+            updateLamps(elapsed);
+            
+            waveAnimationFrame = requestAnimationFrame(waveLoop);
+        }
+
+        // Запуск анимации при загрузке
+        startTime = performance.now();
+        waveAnimationFrame = requestAnimationFrame(waveLoop);
+
+        // Кнопка паузы
+        waveBtn.addEventListener('click', () => {
+            if (isPaused) {
+                // Возобновить
+                isPaused = false;
+                // Корректируем startTime, чтобы анимация не прыгнула
+                startTime = performance.now() - pausedTime;
+                waveAnimationFrame = requestAnimationFrame(waveLoop);
+                waveBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    Пауза
+                `;
+            } else {
+                // Пауза
+                isPaused = true;
+                pausedTime = performance.now() - startTime;
+                cancelAnimationFrame(waveAnimationFrame);
+                waveBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    Возобновить
+                `;
+            }
+        });
+
+        // Пауза когда вкладка неактивна (экономия ресурсов)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (!isPaused) {
+                    isPaused = true;
+                    pausedTime = performance.now() - startTime;
+                    cancelAnimationFrame(waveAnimationFrame);
+                }
+            } else {
+                if (isPaused && waveBtn.innerHTML.includes('Возобновить')) {
+                    isPaused = false;
+                    startTime = performance.now() - pausedTime;
+                    waveAnimationFrame = requestAnimationFrame(waveLoop);
+                }
+            }
+        });
+
+        // --- 7. ФУНКЦИЯ ЗАГРУЗКИ КАРТИНОК ---
+        function loadImage(event, imgId, placeholderId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById(imgId);
+                    const placeholder = document.getElementById(placeholderId);
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
