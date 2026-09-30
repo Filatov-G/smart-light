@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Умный Свет | Адаптивная система освещения для городских парков</title>
     <style>
-        /* --- БАЗОВЫЕ НАСТРОЙКИ И ПЕРЕМЕННЫЕ --- */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
 
         :root {
@@ -39,7 +38,6 @@
             background-attachment: fixed;
         }
 
-        /* --- АНИМАЦИИ ПОЯВЛЕНИЯ --- */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -47,7 +45,6 @@
         }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* --- НАВИГАЦИЯ --- */
         nav {
             position: fixed;
             top: 0; width: 100%;
@@ -101,7 +98,6 @@
         .nav-links a:hover { color: #fff; }
         .nav-links a:hover::after { width: 100%; }
 
-        /* --- ГЛАВНЫЙ ЭКРАН --- */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -156,12 +152,191 @@
         .stat-item h4 { font-size: 1.8rem; font-weight: 800; color: #fff; }
         .stat-item p { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- ВИЗУАЛЬНАЯ ЧАСТЬ HERO --- */
+        /* === ВИЗУАЛЬНАЯ ЧАСТЬ HERO С КАРУСЕЛЬЮ === */
         .hero-visual {
             flex: 1;
             display: flex; justify-content: center; align-items: center;
             position: relative; z-index: 2; min-height: 600px;
         }
+
+        .hero-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        /* Слайд с фото фонаря */
+        .hero-slide-photo {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .hero-photo-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 3/4;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: linear-gradient(145deg, rgba(35, 42, 60, 0.6) 0%, rgba(20, 25, 40, 0.8) 100%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 210, 255, 0.15);
+        }
+
+        .hero-photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0.95;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero-photo-wrapper:hover img { opacity: 1; }
+
+        .hero-photo-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #5a6075;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-photo-placeholder svg {
+            width: 60px;
+            height: 60px;
+            fill: #4a5065;
+            margin-bottom: 1rem;
+        }
+
+        .hero-photo-caption {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .hero-photo-caption h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .hero-photo-caption p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Стрелки карусели */
+        .hero-carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            color: var(--accent-cyan);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-carousel-arrow:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 25px var(--accent-glow);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .hero-carousel-arrow svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .hero-carousel-arrow.prev {
+            left: -70px;
+        }
+
+        .hero-carousel-arrow.next {
+            right: -70px;
+        }
+
+        /* Точки-индикаторы */
+        .hero-carousel-dots {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .hero-carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .hero-carousel-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        /* Обертка вокруг слайда-фонаря (без карусели) */
+        .lamp-slide-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
         .lamp-container {
             position: relative;
             width: 300px; height: 500px;
@@ -300,7 +475,6 @@
         }
         .timer-display.active { opacity: 1; }
 
-        /* --- СЕКЦИЯ ПРОБЛЕМЫ --- */
         .problem-section {
             padding: 6rem 5%;
             max-width: 1200px;
@@ -324,7 +498,6 @@
             backdrop-filter: blur(10px);
         }
 
-        /* --- ХАРАКТЕРИСТИКИ --- */
         .specs-section { padding: 8rem 5%; max-width: 1400px; margin: 0 auto; }
         .section-header { text-align: center; margin-bottom: 4rem; }
         .section-header h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: #fff; }
@@ -369,7 +542,6 @@
         .spec-value { font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 0.5rem; }
         .spec-desc { font-size: 0.9rem; color: var(--text-muted); }
 
-        /* --- АЛГОРИТМ --- */
         .logic-section {
             background: linear-gradient(180deg, transparent, rgba(0, 210, 255, 0.04), transparent);
             border-top: 1px solid var(--border-color);
@@ -421,7 +593,6 @@
         .badge-bright { background: rgba(0, 210, 255, 0.22); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
         .badge-green { background: rgba(0, 230, 118, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); }
 
-        /* --- БЕГУЩАЯ ВОЛНА --- */
         .wave-section {
             padding: 8rem 5%;
             max-width: 1400px;
@@ -479,12 +650,14 @@
             border-radius: 2px;
         }
         .wave-light-cone {
-            position: absolute; bottom: 0; left: 50%;
+            position: absolute;
+            top: 25px;
+            left: 50%;
             transform: translateX(-50%);
             width: 0; height: 0;
             border-left: 60px solid transparent;
             border-right: 60px solid transparent;
-            border-top: 150px solid rgba(0, 210, 255, 0.04);
+            border-bottom: 150px solid rgba(0, 210, 255, 0.04);
             transition: all 0.5s ease;
             pointer-events: none;
             filter: blur(8px);
@@ -495,21 +668,22 @@
             box-shadow: 0 0 25px var(--accent-cyan), 0 0 50px var(--accent-cyan);
         }
         .wave-lamp.active .wave-light-cone {
-            border-top-color: rgba(0, 210, 255, 0.3);
+            border-bottom-color: rgba(0, 210, 255, 0.3);
             filter: blur(15px);
         }
         .wave-lamp.preparing .wave-lamp-head::before {
-            opacity: 0.75;
-            box-shadow: 0 0 15px var(--accent-cyan);
-            animation: preparePulse 1s infinite alternate;
+            opacity: 0.7;
+            box-shadow: 0 0 18px var(--accent-cyan);
+            animation: preparePulse 1.5s infinite alternate;
         }
         .wave-lamp.preparing .wave-light-cone {
-            border-top-color: rgba(0, 210, 255, 0.15);
+            border-bottom-color: rgba(0, 210, 255, 0.18);
+            filter: blur(11px);
         }
 
-        /* Пешеходы */
         .wave-pedestrian {
             position: absolute; bottom: 0;
+            left: 0;
             width: 14px; height: 28px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 7px 7px 0 0;
@@ -517,6 +691,7 @@
             filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
             opacity: 0;
             pointer-events: none;
+            will-change: transform;
         }
         .wave-pedestrian::after {
             content: '';
@@ -525,12 +700,10 @@
             background: rgba(255, 255, 255, 0.7);
             border-radius: 4px;
         }
-        .pedestrian-solo { animation: walkRight 6s linear infinite; animation-delay: 0s; }
-        .pedestrian-pair-1 { animation: walkLeft 8s linear infinite; animation-delay: 1.5s; }
-        .pedestrian-pair-2 { animation: walkLeft 8s linear infinite; animation-delay: 1.7s; }
-        .pedestrian-slow { animation: walkRight 9s linear infinite; animation-delay: 3s; background: rgba(255, 200, 200, 0.9); }
+        .pedestrian-slow { background: rgba(255, 200, 200, 0.9); }
         .dog {
             position: absolute; bottom: 0;
+            left: 0;
             width: 16px; height: 10px;
             background: rgba(200, 180, 150, 0.9);
             border-radius: 8px 8px 0 0;
@@ -538,8 +711,7 @@
             filter: drop-shadow(0 0 6px rgba(200,180,150,0.5));
             opacity: 0;
             pointer-events: none;
-            animation: walkRight 9s linear infinite;
-            animation-delay: 2.5s;
+            will-change: transform;
         }
         .dog::before {
             content: '';
@@ -597,9 +769,8 @@
             box-shadow: 0 0 10px var(--accent-cyan);
         }
         .wave-info-dot.dim { background: #4a5065; box-shadow: none; }
-        .wave-info-dot.prep { background: rgba(0, 210, 255, 0.6); box-shadow: 0 0 8px var(--accent-cyan); }
+        .wave-info-dot.prep { background: rgba(0, 210, 255, 0.7); box-shadow: 0 0 8px var(--accent-cyan); }
 
-        /* --- ЭФФЕКТИВНОСТЬ --- */
         .economy-section { padding: 6rem 5%; max-width: 1200px; margin: 0 auto; }
         .economy-grid {
             display: grid;
@@ -647,7 +818,6 @@
         .case-study h4 { color: #fff; margin-bottom: 0.3rem; font-size: 1rem; }
         .case-study p { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* --- ДОКУМЕНТАЦИЯ --- */
         .docs-section {
             padding: 6rem 5%;
             max-width: 1200px;
@@ -698,9 +868,7 @@
             padding: 2rem; z-index: 0;
         }
         .img-placeholder svg { width: 40px; height: 40px; fill: #4a5065; margin-bottom: 1rem; }
-        .image-container img[src=""] { display: none; }
 
-        /* --- ПАНЕЛЬ ЗАГРУЗКИ --- */
         .upload-panel {
             position: fixed; bottom: 20px; right: 20px;
             background: linear-gradient(145deg, rgba(35, 42, 60, 0.95) 0%, rgba(25, 30, 45, 0.95) 100%);
@@ -712,10 +880,13 @@
             display: flex; flex-direction: column; gap: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: var(--transition);
+            min-width: 200px;
         }
         .upload-panel h4 { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .upload-btn {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 0.6rem 1rem;
             background: rgba(255,255,255,0.06);
             border: 1px solid var(--border-color);
@@ -725,12 +896,25 @@
             cursor: pointer;
             transition: var(--transition);
             font-family: inherit;
+            width: 100%;
+            text-align: left;
         }
         .upload-btn:hover { background: rgba(0, 210, 255, 0.15); border-color: var(--accent-cyan); }
         .upload-btn span { color: var(--accent-cyan); font-weight: 600; margin-left: 10px; }
-        .upload-btn input[type="file"] { display: none; }
 
-        /* --- ФУТЕР --- */
+        /* Кнопка "Удалить" */
+        .upload-btn.delete-mode {
+            background: rgba(255, 59, 59, 0.1);
+            border-color: rgba(255, 59, 59, 0.35);
+        }
+        .upload-btn.delete-mode:hover {
+            background: rgba(255, 59, 59, 0.2);
+            border-color: var(--accent-red);
+        }
+        .upload-btn.delete-mode span {
+            color: #ff8080;
+        }
+
         footer {
             padding: 4rem 5% 2rem;
             background: rgba(5, 8, 15, 0.9);
@@ -742,13 +926,456 @@
         .footer-text { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
         .copyright { color: #5a6075; font-size: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 2rem; }
 
-        /* --- АДАПТИВНОСТЬ --- */
+        /* ИИ-ПОМОЩНИК */
+        .ai-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 240px;
+            z-index: 2500;
+            font-family: 'Inter', sans-serif;
+        }
+        .ai-toggle {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.4), 0 0 30px rgba(0, 210, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+        .ai-toggle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.6), 0 0 40px rgba(0, 210, 255, 0.3);
+        }
+        .ai-toggle svg {
+            width: 26px; height: 26px;
+            fill: #fff;
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+        .ai-icon-close { opacity: 0; transform: rotate(-90deg); }
+        .ai-widget.open .ai-icon-chat { opacity: 0; transform: rotate(90deg); }
+        .ai-widget.open .ai-icon-close { opacity: 1; transform: rotate(0); }
+        .ai-toggle::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-cyan);
+            opacity: 0;
+            animation: aiPulse 2.5s infinite;
+        }
+        @keyframes aiPulse {
+            0% { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.3); }
+        }
+        .ai-panel {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            width: 380px;
+            height: 520px;
+            background: linear-gradient(145deg, rgba(25, 30, 45, 0.98) 0%, rgba(15, 20, 35, 0.98) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 210, 255, 0.1);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transform-origin: bottom right;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(20px);
+        }
+        .ai-widget.open .ai-panel {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+        .ai-header {
+            padding: 1rem 1.2rem;
+            background: rgba(0, 210, 255, 0.08);
+            border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .ai-avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .ai-avatar svg { width: 22px; height: 22px; fill: #fff; }
+        .ai-header-info { flex: 1; }
+        .ai-header-info h4 { color: #fff; font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
+        .ai-header-info p {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .ai-status-dot {
+            width: 8px; height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: aiBlink 2s infinite;
+        }
+        @keyframes aiBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .ai-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .ai-close-btn:hover { background: rgba(255, 255, 255, 0.08); }
+        .ai-close-btn svg { width: 18px; height: 18px; fill: var(--text-muted); }
+        .ai-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 210, 255, 0.3) transparent;
+        }
+        .ai-messages::-webkit-scrollbar { width: 6px; }
+        .ai-messages::-webkit-scrollbar-track { background: transparent; }
+        .ai-messages::-webkit-scrollbar-thumb {
+            background: rgba(0, 210, 255, 0.3);
+            border-radius: 3px;
+        }
+        .ai-message {
+            max-width: 85%;
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            animation: aiMessageIn 0.3s ease;
+            word-wrap: break-word;
+        }
+        @keyframes aiMessageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .ai-message.bot {
+            align-self: flex-start;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            color: var(--text-main);
+            border-bottom-left-radius: 4px;
+        }
+        .ai-message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #fff;
+            border-bottom-right-radius: 4px;
+            font-weight: 500;
+        }
+        .ai-message.typing {
+            display: flex; gap: 4px;
+            padding: 0.9rem 1rem;
+        }
+        .ai-message.typing span {
+            width: 7px; height: 7px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: aiTyping 1.4s infinite;
+        }
+        .ai-message.typing span:nth-child(2) { animation-delay: 0.2s; }
+        .ai-message.typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes aiTyping {
+            0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+            30% { opacity: 1; transform: translateY(-5px); }
+        }
+        .ai-suggestions {
+            padding: 0 1rem 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .ai-suggestion {
+            padding: 0.4rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--accent-cyan);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .ai-suggestion:hover {
+            background: rgba(0, 210, 255, 0.15);
+            border-color: var(--accent-cyan);
+        }
+        .ai-input-form {
+            display: flex;
+            gap: 8px;
+            padding: 0.8rem 1rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .ai-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.6rem 1rem;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .ai-input::placeholder { color: var(--text-muted); }
+        .ai-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.1);
+        }
+        .ai-send {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .ai-send:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+        }
+        .ai-send svg { width: 18px; height: 18px; fill: #fff; margin-left: 2px; }
+
+        .admin-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .admin-modal.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .admin-modal-content {
+            background: linear-gradient(145deg, rgba(35, 42, 60, 0.98) 0%, rgba(20, 25, 40, 0.98) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 210, 255, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .admin-modal.open .admin-modal-content {
+            transform: scale(1);
+        }
+        .admin-modal-header { text-align: center; margin-bottom: 1.5rem; }
+        .admin-lock-icon {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 210, 255, 0.12);
+            border: 2px solid rgba(0, 210, 255, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1rem;
+            animation: lockPulse 2.5s infinite;
+        }
+        @keyframes lockPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.3); }
+            50% { box-shadow: 0 0 0 12px rgba(0, 210, 255, 0); }
+        }
+        .admin-lock-icon svg {
+            width: 28px; height: 28px;
+            fill: var(--accent-cyan);
+        }
+        .admin-modal-header h3 {
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .admin-modal-header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .admin-modal-body { margin-bottom: 1.5rem; }
+        .admin-code-input {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            outline: none;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .admin-code-input::placeholder {
+            color: #5a6075;
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+        .admin-code-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.12);
+            background: rgba(0, 210, 255, 0.05);
+        }
+        .admin-code-input.error {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 4px rgba(255, 59, 59, 0.12);
+            animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+        @keyframes shake {
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(4px); }
+            30%, 50%, 70% { transform: translateX(-6px); }
+            40%, 60% { transform: translateX(6px); }
+        }
+        .admin-error {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0.8rem;
+            padding: 0.7rem 1rem;
+            background: rgba(255, 59, 59, 0.1);
+            border: 1px solid rgba(255, 59, 59, 0.3);
+            border-radius: 10px;
+            color: #ff8080;
+            font-size: 0.85rem;
+        }
+        .admin-error.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        .admin-error svg {
+            width: 16px; height: 16px;
+            fill: #ff8080;
+            flex-shrink: 0;
+        }
+        .admin-modal-footer { display: flex; gap: 10px; }
+        .admin-btn {
+            flex: 1;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .admin-btn-cancel {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--border-color);
+            color: var(--text-muted);
+        }
+        .admin-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .admin-btn-confirm {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+        }
+        .admin-btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
+        }
+        .admin-badge {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 0.4rem 0.8rem;
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .admin-badge.show { display: flex; }
+        .admin-badge svg { width: 12px; height: 12px; fill: var(--accent-green); }
+        .admin-logout-btn {
+            display: none;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid rgba(255, 59, 59, 0.3);
+            color: #ff8080;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .admin-logout-btn:hover { background: rgba(255, 59, 59, 0.1); }
+        .admin-logout-btn.show { display: block; }
+
+        /* Уведомление */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 1rem 1.5rem;
+            background: linear-gradient(145deg, rgba(35, 42, 60, 0.98) 0%, rgba(20, 25, 40, 0.98) 100%);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 210, 255, 0.2);
+            z-index: 5000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
         @media (max-width: 992px) {
             .hero { flex-direction: column; text-align: center; padding-top: 120px; padding-bottom: 60px; }
             .hero-content { max-width: 100%; }
             .hero-description { margin: 0 auto 2rem; }
             .hero-stats { justify-content: center; }
-            .hero-visual { margin-top: 4rem; }
+            .hero-visual { margin-top: 4rem; width: 100%; }
+            .hero-carousel { height: 500px; }
+            .hero-carousel-arrow.prev { left: 0; }
+            .hero-carousel-arrow.next { right: 0; }
+            .hero-carousel-arrow { width: 42px; height: 42px; }
             .nav-links { display: none; }
             
             .problem-grid { grid-template-columns: 1fr; }
@@ -759,13 +1386,20 @@
             .timeline-item.right { left: 0%; }
             .timeline-item.left::after, .timeline-item.right::after { left: 21px; }
             
-            .upload-panel { bottom: 10px; right: 10px; left: 10px; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; }
+            .upload-panel { 
+                bottom: 10px; right: 10px; left: 10px; 
+                flex-direction: row; flex-wrap: wrap; 
+                align-items: center; justify-content: center; 
+                min-width: auto;
+            }
             .upload-panel h4 { width: 100%; text-align: center; margin-bottom: 0; }
             .upload-btn { flex: 1; min-width: 140px; justify-content: center; }
-            .upload-btn span { display: none; }
+            .upload-btn span { margin-left: 8px; }
             
             .wave-demo { height: 320px; }
-            .wave-light-cone { border-left: 40px solid transparent; border-right: 40px solid transparent; border-top: 100px solid rgba(0, 210, 255, 0.04); }
+            .wave-light-cone { border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 100px solid rgba(0, 210, 255, 0.04); }
+            
+            .ai-widget { right: 15px; bottom: 90px; }
         }
 
         @media (max-width: 576px) {
@@ -776,7 +1410,23 @@
             .wave-demo { height: 260px; padding: 0 2%; }
             .wave-lamp-head { width: 30px; height: 20px; }
             .wave-lamp-pole { height: 70px; }
-            .wave-light-cone { border-left: 25px solid transparent; border-right: 25px solid transparent; border-top: 70px solid rgba(0, 210, 255, 0.04); }
+            .wave-light-cone { border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 70px solid rgba(0, 210, 255, 0.04); }
+            
+            .hero-carousel { height: 450px; }
+            .hero-carousel-arrow { width: 38px; height: 38px; }
+            .hero-carousel-arrow svg { width: 18px; height: 18px; }
+            
+            .ai-widget { bottom: 90px; right: 15px; }
+            .ai-toggle { width: 55px; height: 55px; }
+            .ai-panel {
+                width: calc(100vw - 30px);
+                height: calc(100vh - 200px);
+                max-height: 500px;
+                right: -15px;
+            }
+            
+            .upload-panel { bottom: 10px !important; }
+            .admin-modal-content { padding: 1.5rem; }
         }
 
         @keyframes pulse {
@@ -784,42 +1434,24 @@
             70% { box-shadow: 0 0 0 10px rgba(0, 210, 255, 0); }
             100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
         }
-
         @keyframes blink {
             from { opacity: 1; }
             to { opacity: 0.3; }
         }
-
         @keyframes walk {
             0% { left: -50px; opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { left: 110%; opacity: 0; }
         }
-
         @keyframes preparePulse {
-            from { opacity: 0.4; }
-            to { opacity: 0.9; }
-        }
-
-        @keyframes walkRight {
-            0% { left: -30px; opacity: 0; }
-            5% { opacity: 1; }
-            95% { opacity: 1; }
-            100% { left: calc(100% + 30px); opacity: 0; }
-        }
-
-        @keyframes walkLeft {
-            0% { right: -30px; opacity: 0; }
-            5% { opacity: 1; }
-            95% { opacity: 1; }
-            100% { right: calc(100% + 30px); opacity: 0; }
+            from { opacity: 0.45; }
+            to { opacity: 0.7; }
         }
     </style>
 </head>
 <body>
 
-    <!-- НАВИГАЦИЯ -->
     <nav id="navbar">
         <div class="logo">
             <div class="logo-dot"></div>
@@ -835,7 +1467,6 @@
         </div>
     </nav>
 
-    <!-- ГЛАВНЫЙ ЭКРАН -->
     <header class="hero">
         <div class="hero-content reveal">
             <div class="hero-tagline">Адаптивная система освещения</div>
@@ -862,30 +1493,71 @@
         </div>
 
         <div class="hero-visual reveal">
-            <div class="lamp-container" id="lampSim">
-                <div class="light-cone"></div>
+            <div class="hero-carousel" id="heroCarousel">
                 
-                <div class="lamp-body">
-                    <div class="solar-panel">
-                        <div class="pir-sensor" id="pirSensor"></div>
+                <!-- СЛАЙД 1: Симуляция фонаря -->
+                <div class="hero-slide active" data-slide="0">
+                    <div class="lamp-slide-wrapper">
+                        <div class="lamp-container" id="lampSim">
+                            <div class="light-cone"></div>
+                            
+                            <div class="lamp-body">
+                                <div class="solar-panel">
+                                    <div class="pir-sensor" id="pirSensor"></div>
+                                </div>
+                                <div class="led-strip" id="ledStrip"></div>
+                            </div>
+                            
+                            <div class="lamp-pole"></div>
+                            <div class="pedestrian" id="pedestrian"></div>
+                            
+                            <button class="sim-btn" id="simBtn">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                                Симулировать движение
+                            </button>
+                            
+                            <div class="timer-display" id="timerDisplay">Возврат в экономию: 3с</div>
+                        </div>
                     </div>
-                    <div class="led-strip" id="ledStrip"></div>
                 </div>
                 
-                <div class="lamp-pole"></div>
-                <div class="pedestrian" id="pedestrian"></div>
-                
-                <button class="sim-btn" id="simBtn">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                    Симулировать движение
+                <!-- СЛАЙД 2: Фото фонаря -->
+                <div class="hero-slide" data-slide="1">
+                    <div class="hero-slide-photo">
+                        <div class="hero-photo-wrapper">
+                            <div class="hero-photo-placeholder" id="heroPhotoPlaceholder">
+                                <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                                <p>Фото продукта<br><span style="font-size:0.75rem;color:#4a5065;">Положите файл lamp.jpg рядом с index.html</span></p>
+                            </div>
+                            <img id="heroPhoto" src="lamp.jpg" alt="Фонарь Умный Свет" 
+                                 style="display:none;"
+                                 onload="this.style.display='block'; document.getElementById('heroPhotoPlaceholder').style.display='none';"
+                                 onerror="this.style.display='none';">
+                        </div>
+                        <div class="hero-photo-caption">
+                            <h3>Фонарь «Умный Свет»</h3>
+                            <p>Автономный светильник на солнечной энергии</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Стрелки -->
+                <button class="hero-carousel-arrow prev" id="heroCarouselPrev" aria-label="Предыдущий слайд" type="button">
+                    <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
                 </button>
-                
-                <div class="timer-display" id="timerDisplay">Возврат в экономию: 3с</div>
+                <button class="hero-carousel-arrow next" id="heroCarouselNext" aria-label="Следующий слайд" type="button">
+                    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
+
+                <!-- Точки -->
+                <div class="hero-carousel-dots">
+                    <button class="hero-carousel-dot active" data-slide-target="0" aria-label="Слайд 1" type="button"></button>
+                    <button class="hero-carousel-dot" data-slide-target="1" aria-label="Слайд 2" type="button"></button>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- СЕКЦИЯ ПРОБЛЕМЫ -->
     <section id="problem" class="problem-section">
         <div class="problem-grid">
             <div class="problem-text reveal">
@@ -904,7 +1576,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ ХАРАКТЕРИСТИК -->
     <section id="specs" class="specs-section">
         <div class="section-header reveal">
             <h2>Технические характеристики</h2>
@@ -951,7 +1622,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ АЛГОРИТМА -->
     <section id="logic" class="logic-section">
         <div class="section-header reveal">
             <h2>Алгоритм работы</h2>
@@ -983,7 +1653,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ БЕГУЩЕЙ ВОЛНЫ -->
     <section id="wave" class="wave-section">
         <div class="section-header reveal">
             <h2>Эффект «бегущей волны»</h2>
@@ -1038,7 +1707,7 @@
             </div>
             <div class="wave-info-item">
                 <div class="wave-info-dot prep"></div>
-                <span>Готовность к включению</span>
+                <span>Готовность к включению (~55%)</span>
             </div>
             <div class="wave-info-item">
                 <div class="wave-info-dot"></div>
@@ -1047,7 +1716,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ ЭФФЕКТИВНОСТИ -->
     <section id="economy" class="economy-section">
         <div class="section-header reveal">
             <h2>Эффективность и опыт</h2>
@@ -1085,7 +1753,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ ДОКУМЕНТАЦИИ -->
     <section id="docs" class="docs-section">
         <div class="section-header reveal">
             <h2>Техническая документация</h2>
@@ -1118,22 +1785,25 @@
         </div>
     </section>
 
-    <!-- ПАНЕЛЬ ЗАГРУЗКИ КАРТИНОК -->
     <div class="upload-panel" id="uploadPanel">
+        <div class="admin-badge" id="adminBadge">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            Админ
+        </div>
         <h4>Управление фото</h4>
-        <label class="upload-btn">
-            Загрузить Схему
+        <button class="upload-btn" id="uploadSchemaBtn" type="button">
+            <span id="schemaBtnText">Загрузить Схему</span>
             <span>+</span>
-            <input type="file" accept="image/*" id="upload-schema" onchange="loadImage(event, 'img-schema', 'placeholder-schema')">
-        </label>
-        <label class="upload-btn">
-            Загрузить Чертеж
+        </button>
+        <button class="upload-btn" id="uploadDrawingBtn" type="button">
+            <span id="drawingBtnText">Загрузить Чертеж</span>
             <span>+</span>
-            <input type="file" accept="image/*" id="upload-drawing" onchange="loadImage(event, 'img-drawing', 'placeholder-drawing')">
-        </label>
+        </button>
+        <input type="file" accept="image/*" id="upload-schema" style="display:none;" onchange="loadImage(event, 'img-schema', 'placeholder-schema', 'schema')">
+        <input type="file" accept="image/*" id="upload-drawing" style="display:none;" onchange="loadImage(event, 'img-drawing', 'placeholder-drawing', 'drawing')">
+        <button class="admin-logout-btn" id="adminLogoutBtn">Заблокировать</button>
     </div>
 
-    <!-- ФУТЕР -->
     <footer>
         <div class="footer-logo">УМНЫЙ<span>СВЕТ</span></div>
         <p class="footer-text">Адаптивная система освещения для городских парков. Инвестиции в качество жизни.</p>
@@ -1142,46 +1812,104 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <div class="admin-lock-icon">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
+                </div>
+                <h3>Доступ только для разработчиков</h3>
+                <p>Введите код разработчика для изменения файлов</p>
+            </div>
+            
+            <div class="admin-modal-body">
+                <input 
+                    type="password" 
+                    class="admin-code-input" 
+                    id="adminCodeInput" 
+                    placeholder="Введите код..."
+                    autocomplete="off"
+                    maxlength="30"
+                >
+                <div class="admin-error" id="adminError">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <span>Неверный код. Попробуйте снова.</span>
+                </div>
+            </div>
+            
+            <div class="admin-modal-footer">
+                <button class="admin-btn admin-btn-cancel" id="adminCancel" type="button">Отмена</button>
+                <button class="admin-btn admin-btn-confirm" id="adminConfirm" type="button">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ai-widget" id="aiWidget">
+        <button class="ai-toggle" id="aiToggle" aria-label="Открыть помощника" type="button">
+            <svg class="ai-icon-chat" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+            <svg class="ai-icon-close" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+        
+        <div class="ai-panel" id="aiPanel">
+            <div class="ai-header">
+                <div class="ai-avatar">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </div>
+                <div class="ai-header-info">
+                    <h4>ИИ-помощник</h4>
+                    <p><span class="ai-status-dot"></span>Онлайн</p>
+                </div>
+                <button class="ai-close-btn" id="aiCloseBtn" aria-label="Закрыть" type="button">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            
+            <div class="ai-messages" id="aiMessages"></div>
+            
+            <div class="ai-suggestions" id="aiSuggestions"></div>
+            
+            <form class="ai-input-form" id="aiForm">
+                <input type="text" class="ai-input" id="aiInput" placeholder="Спросите что-нибудь..." autocomplete="off">
+                <button type="submit" class="ai-send" aria-label="Отправить">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div class="toast" id="toast"></div>
+
     <script>
-        // --- 1. ЭФФЕКТ СКРОЛЛА НАВИГАЦИИ ---
+        // --- 1. СКРОЛЛ НАВИГАЦИИ ---
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
         });
 
-        // --- 2. АНИМАЦИЯ ПОЯВЛЕНИЯ ЭЛЕМЕНТОВ (REVEAL) ---
+        // --- 2. АНИМАЦИЯ REVEAL ---
         const revealElements = document.querySelectorAll('.reveal');
-        
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    if (entry.target.classList.contains('spec-card')) {
-                        initCardHover(entry.target);
-                    }
+                    if (entry.target.classList.contains('spec-card')) initCardHover(entry.target);
                 }
             });
         }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
-
         revealElements.forEach(el => revealObserver.observe(el));
 
-        // --- 3. ЭФФЕКТ 3D ПОДСВЕТКИ КАРТОЧЕК ---
+        // --- 3. ПОДСВЕТКА КАРТОЧЕК ---
         function initCardHover(card) {
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
+                card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
             });
         }
 
-        // --- 4. ПЕРЕКЛЮЧЕНИЕ ТАБОВ ---
+        // --- 4. ТАБЫ ---
         function switchTab(event, tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -1189,7 +1917,67 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // --- 5. СИМУЛЯЦИЯ РАБОТЫ ФОНАРЯ (HERO) ---
+        // --- 5. УВЕДОМЛЕНИЕ (TOAST) ---
+        const toast = document.getElementById('toast');
+        let toastTimeout = null;
+        function showToast(message, type = 'info') {
+            toast.textContent = message;
+            toast.style.borderColor = type === 'error' ? 'var(--accent-red)' : 
+                                       type === 'success' ? 'var(--accent-green)' : 
+                                       'var(--accent-cyan)';
+            toast.classList.add('show');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // --- 6. КАРУСЕЛЬ В HERO ---
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        const heroDots = document.querySelectorAll('.hero-carousel-dot');
+        const heroPrev = document.getElementById('heroCarouselPrev');
+        const heroNext = document.getElementById('heroCarouselNext');
+        let currentSlide = 0;
+        const totalSlides = heroSlides.length;
+
+        function goToSlide(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            
+            currentSlide = index;
+            
+            heroSlides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            
+            heroDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        heroPrev.addEventListener('click', () => goToSlide(currentSlide - 1));
+        heroNext.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+        heroDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const target = parseInt(dot.dataset.slideTarget);
+                goToSlide(target);
+            });
+        });
+
+        // Стрелки клавиатуры для карусели
+        document.addEventListener('keydown', (e) => {
+            const heroRect = document.querySelector('.hero-visual').getBoundingClientRect();
+            const inView = heroRect.top < window.innerHeight && heroRect.bottom > 0;
+            
+            if (inView) {
+                if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+                if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+            }
+        });
+
+        // --- 7. СИМУЛЯЦИЯ ФОНАРЯ ---
         const simBtn = document.getElementById('simBtn');
         const lampSim = document.getElementById('lampSim');
         const pirSensor = document.getElementById('pirSensor');
@@ -1204,7 +1992,6 @@
             pirSensor.classList.remove('active');
             isBright = false;
             timerDisplay.classList.remove('active');
-            
             simBtn.innerHTML = `
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
                 Симулировать движение
@@ -1221,21 +2008,13 @@
                 isBright = true;
                 lampSim.classList.add('moving');
                 pirSensor.classList.add('active');
-                
-                setTimeout(() => {
-                    lampSim.classList.add('bright');
-                }, 500);
-
+                setTimeout(() => lampSim.classList.add('bright'), 500);
                 simBtn.innerHTML = `
                     <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                     Движение обнаружено!
                 `;
-
                 startTimer();
-
-                setTimeout(() => {
-                    lampSim.classList.remove('moving');
-                }, 2500);
+                setTimeout(() => lampSim.classList.remove('moving'), 2500);
             }
         });
 
@@ -1243,127 +2022,107 @@
             let timeLeft = 3;
             timerDisplay.classList.add('active');
             timerDisplay.textContent = `Возврат в экономию: ${timeLeft}с`;
-
             countdownInterval = setInterval(() => {
                 timeLeft--;
-                if (timeLeft > 0) {
-                    timerDisplay.textContent = `Возврат в экономию: ${timeLeft}с`;
-                } else {
-                    clearInterval(countdownInterval);
-                }
+                if (timeLeft > 0) timerDisplay.textContent = `Возврат в экономию: ${timeLeft}с`;
+                else clearInterval(countdownInterval);
             }, 1000);
-
-            returnTimeout = setTimeout(() => {
-                resetToEco();
-            }, timeLeft * 1000);
+            returnTimeout = setTimeout(resetToEco, timeLeft * 1000);
         }
 
-        // --- 6. ДЕМОНСТРАЦИЯ «БЕГУЩЕЙ ВОЛНЫ» ---
+        // --- 8. БЕГУЩАЯ ВОЛНА ---
         const waveDemo = document.getElementById('waveDemo');
         const waveBtn = document.getElementById('waveBtn');
         const waveLamps = document.querySelectorAll('.wave-lamp');
-        
+
         let isPaused = false;
         let waveAnimationFrame = null;
-        let startTime = performance.now();
-        let pausedTime = 0;
+        let lastFrameTime = performance.now();
+        let pauseTransitionStart = 0;
+        let pauseTransitionDuration = 1200;
+        let slowFactor = 1;
 
-        const pedestrians = [
-            { id: 'pedSolo', startTime: 0, duration: 6000, direction: 1 },
-            { id: 'pedPair1', startTime: 1500, duration: 8000, direction: -1 },
-            { id: 'pedPair2', startTime: 1700, duration: 8000, direction: -1 },
-            { id: 'pedSlow', startTime: 3000, duration: 9000, direction: 1 },
-            { id: 'dog', startTime: 2500, duration: 9000, direction: 1 }
-        ];
+        let demoWidth = waveDemo.clientWidth;
+        window.addEventListener('resize', () => { demoWidth = waveDemo.clientWidth; });
 
         const lampPositions = [10, 30, 50, 70, 90];
-        const CYCLE_DURATION = 10000;
+        const pedestrians = [
+            { id: 'pedSolo',  startX: -10, speed: 11, direction: 1 },
+            { id: 'pedPair1', startX: 110, speed: 8,  direction: -1 },
+            { id: 'pedPair2', startX: 113, speed: 8,  direction: -1 },
+            { id: 'pedSlow',  startX: -10, speed: 7,  direction: 1 },
+            { id: 'dog',      startX: -6,  speed: 7,  direction: 1 }
+        ];
 
-        function resetWaveLamps() {
-            waveLamps.forEach(lamp => {
-                lamp.classList.remove('active', 'preparing');
-            });
+        const positions = {};
+        pedestrians.forEach(ped => {
+            positions[ped.id] = ped.startX;
+            const el = document.getElementById(ped.id);
+            if (el) el.style.opacity = '0';
+        });
+
+        function applyPosition(ped) {
+            const el = document.getElementById(ped.id);
+            if (!el) return;
+            const pos = positions[ped.id];
+            el.style.opacity = (pos < -8 || pos > 108) ? '0' : '1';
+            el.style.transform = `translateX(${(pos / 100) * demoWidth}px)`;
         }
 
-        function updateLamps(currentTime) {
+        function updateLamps(currentPositions) {
+            waveLamps.forEach(lamp => lamp.classList.remove('active', 'preparing'));
+            const activeIndices = new Set();
             waveLamps.forEach((lamp, index) => {
                 const lampPos = lampPositions[index];
-                let isActive = false;
-                let isPreparing = false;
-
                 pedestrians.forEach(ped => {
-                    const elapsed = currentTime - ped.startTime;
-                    const cycleTime = ((elapsed % CYCLE_DURATION) + CYCLE_DURATION) % CYCLE_DURATION;
-                    
-                    if (cycleTime > ped.duration) return;
-                    
-                    const progress = cycleTime / ped.duration;
-                    
-                    let pedPos;
-                    if (ped.direction === 1) {
-                        pedPos = -5 + progress * 110;
-                    } else {
-                        pedPos = 105 - progress * 110;
-                    }
-
-                    const distance = Math.abs(pedPos - lampPos);
-
-                    if (distance < 12) {
-                        isActive = true;
-                    }
-                    else if (distance < 25) {
-                        const prevProgress = (cycleTime - 100) / ped.duration;
-                        if (prevProgress > 0) {
-                            const prevPos = ped.direction === 1 
-                                ? -5 + prevProgress * 110 
-                                : 105 - prevProgress * 110;
-                            const prevDistance = Math.abs(prevPos - lampPos);
-                            if (distance < prevDistance) {
-                                isPreparing = true;
-                            }
-                        } else {
-                            isPreparing = true;
-                        }
-                    }
+                    const pedPos = currentPositions[ped.id];
+                    if (pedPos < -8 || pedPos > 108) return;
+                    if (Math.abs(pedPos - lampPos) < 10) activeIndices.add(index);
                 });
-
-                if (isActive) {
-                    lamp.classList.add('active');
-                    lamp.classList.remove('preparing');
-                } else if (isPreparing) {
-                    lamp.classList.add('preparing');
-                    lamp.classList.remove('active');
-                } else {
-                    lamp.classList.remove('active', 'preparing');
-                }
+            });
+            waveLamps.forEach((lamp, index) => {
+                if (activeIndices.has(index)) lamp.classList.add('active');
+                else if (activeIndices.has(index - 1) || activeIndices.has(index + 1)) lamp.classList.add('preparing');
             });
         }
 
         function waveLoop(now) {
-            if (isPaused) return;
-            
-            const elapsed = now - startTime;
-            updateLamps(elapsed);
-            
+            const deltaSec = Math.min((now - lastFrameTime) / 1000, 0.05);
+            lastFrameTime = now;
+
+            if (isPaused) {
+                const pauseElapsed = now - pauseTransitionStart;
+                slowFactor = 1 - Math.min(pauseElapsed / pauseTransitionDuration, 1);
+            } else if (slowFactor < 1) {
+                slowFactor = Math.min(slowFactor + deltaSec * 1.5, 1);
+            }
+
+            pedestrians.forEach(ped => {
+                let pos = positions[ped.id];
+                pos += ped.direction * ped.speed * deltaSec * slowFactor;
+                if (ped.direction === 1 && pos > 110) pos = -10;
+                else if (ped.direction === -1 && pos < -10) pos = 110;
+                positions[ped.id] = pos;
+                applyPosition(ped);
+            });
+
+            updateLamps(positions);
             waveAnimationFrame = requestAnimationFrame(waveLoop);
         }
 
-        startTime = performance.now();
+        lastFrameTime = performance.now();
         waveAnimationFrame = requestAnimationFrame(waveLoop);
 
         waveBtn.addEventListener('click', () => {
             if (isPaused) {
                 isPaused = false;
-                startTime = performance.now() - pausedTime;
-                waveAnimationFrame = requestAnimationFrame(waveLoop);
                 waveBtn.innerHTML = `
                     <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                     Пауза
                 `;
             } else {
                 isPaused = true;
-                pausedTime = performance.now() - startTime;
-                cancelAnimationFrame(waveAnimationFrame);
+                pauseTransitionStart = performance.now();
                 waveBtn.innerHTML = `
                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     Возобновить
@@ -1372,36 +2131,373 @@
         });
 
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                if (!isPaused) {
-                    isPaused = true;
-                    pausedTime = performance.now() - startTime;
-                    cancelAnimationFrame(waveAnimationFrame);
+            if (document.hidden && !isPaused) {
+                isPaused = true;
+                pauseTransitionStart = performance.now();
+                waveBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    Возобновить
+                `;
+            }
+        });
+
+        // --- 9. ХРАНИЛИЩЕ ФОТО (localStorage) ---
+        const STORAGE_KEYS = {
+            schema: 'smartLight_schema',
+            drawing: 'smartLight_drawing'
+        };
+
+        // Восстановление фото при загрузке страницы
+        function restoreImages() {
+            ['schema', 'drawing'].forEach(type => {
+                const stored = localStorage.getItem(STORAGE_KEYS[type]);
+                if (stored) {
+                    const img = document.getElementById(type === 'schema' ? 'img-schema' : 'img-drawing');
+                    const placeholder = document.getElementById(type === 'schema' ? 'placeholder-schema' : 'placeholder-drawing');
+                    if (img && placeholder) {
+                        img.src = stored;
+                        img.style.display = 'block';
+                        placeholder.style.display = 'none';
+                        updateButtonToDelete(type);
+                    }
+                }
+            });
+        }
+
+        // Изменение кнопки на "Удалить"
+        function updateButtonToDelete(type) {
+            const btnText = document.getElementById(type === 'schema' ? 'schemaBtnText' : 'drawingBtnText');
+            const btn = document.getElementById(type === 'schema' ? 'uploadSchemaBtn' : 'uploadDrawingBtn');
+            if (btnText && btn) {
+                btnText.textContent = 'Удалить';
+                btn.classList.add('delete-mode');
+            }
+        }
+
+        // Возврат кнопки в "Загрузить"
+        function updateButtonToUpload(type) {
+            const btnText = document.getElementById(type === 'schema' ? 'schemaBtnText' : 'drawingBtnText');
+            const btn = document.getElementById(type === 'schema' ? 'uploadSchemaBtn' : 'uploadDrawingBtn');
+            if (btnText && btn) {
+                btnText.textContent = type === 'schema' ? 'Загрузить Схему' : 'Загрузить Чертеж';
+                btn.classList.remove('delete-mode');
+            }
+        }
+
+        // Проверка: есть ли сохранённое фото для типа
+        function hasStoredImage(type) {
+            return localStorage.getItem(STORAGE_KEYS[type]) !== null;
+        }
+
+        // Удаление фото
+        function deleteImage(type) {
+            const img = document.getElementById(type === 'schema' ? 'img-schema' : 'img-drawing');
+            const placeholder = document.getElementById(type === 'schema' ? 'placeholder-schema' : 'placeholder-drawing');
+            
+            img.src = '';
+            img.style.display = 'none';
+            placeholder.style.display = 'flex';
+            
+            localStorage.removeItem(STORAGE_KEYS[type]);
+            updateButtonToUpload(type);
+            
+            showToast(type === 'schema' ? 'Схема удалена' : 'Чертёж удалён', 'info');
+        }
+
+        // Загрузка файла
+        function loadImage(event, imgId, placeholderId, type) {
+            const file = event.target.files[0];
+            if (!file) {
+                event.target.value = '';
+                return;
+            }
+            
+            // Проверка размера (максимум 2 МБ для надёжного хранения)
+            const MAX_SIZE = 2 * 1024 * 1024;
+            if (file.size > MAX_SIZE) {
+                showToast('Файл слишком большой (макс. 2 МБ). Сожмите фото на tinypng.com', 'error');
+                event.target.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                const img = document.getElementById(imgId);
+                const placeholder = document.getElementById(placeholderId);
+                
+                img.src = dataUrl;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                // Попытка сохранить в localStorage
+                try {
+                    localStorage.setItem(STORAGE_KEYS[type], dataUrl);
+                    updateButtonToDelete(type);
+                    showToast(type === 'schema' ? 'Схема загружена и сохранена' : 'Чертёж загружен и сохранён', 'success');
+                } catch (err) {
+                    // Если превышен лимит localStorage
+                    showToast('Не удалось сохранить: превышен лимит хранилища. Фото будет только в этой сессии.', 'error');
+                    updateButtonToDelete(type);
+                }
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        // Восстанавливаем фото при загрузке
+        restoreImages();
+
+        // --- 10. ЗАЩИТА КОДОМ ---
+        const DEV_CODE = 'Формула успеха';
+        const adminModal = document.getElementById('adminModal');
+        const adminCodeInput = document.getElementById('adminCodeInput');
+        const adminError = document.getElementById('adminError');
+        const adminCancel = document.getElementById('adminCancel');
+        const adminConfirm = document.getElementById('adminConfirm');
+        const adminBadge = document.getElementById('adminBadge');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+        const uploadSchemaBtn = document.getElementById('uploadSchemaBtn');
+        const uploadDrawingBtn = document.getElementById('uploadDrawingBtn');
+        const uploadSchemaInput = document.getElementById('upload-schema');
+        const uploadDrawingInput = document.getElementById('upload-drawing');
+
+        let pendingAction = null;
+        let isAdmin = sessionStorage.getItem('admin') === 'true';
+
+        function updateAdminUI() {
+            if (isAdmin) {
+                adminBadge.classList.add('show');
+                adminLogoutBtn.classList.add('show');
+            } else {
+                adminBadge.classList.remove('show');
+                adminLogoutBtn.classList.remove('show');
+            }
+        }
+
+        function openAdminModal(action) {
+            pendingAction = action;
+            adminModal.classList.add('open');
+            adminCodeInput.value = '';
+            adminError.classList.remove('show');
+            adminCodeInput.classList.remove('error');
+            setTimeout(() => adminCodeInput.focus(), 300);
+        }
+
+        function closeAdminModal() {
+            adminModal.classList.remove('open');
+            pendingAction = null;
+        }
+
+        function checkAdminCode() {
+            if (adminCodeInput.value === DEV_CODE) {
+                isAdmin = true;
+                sessionStorage.setItem('admin', 'true');
+                updateAdminUI();
+                const action = pendingAction;
+                closeAdminModal();
+                setTimeout(() => {
+                    if (action === 'upload-schema') uploadSchemaInput.click();
+                    else if (action === 'upload-drawing') uploadDrawingInput.click();
+                    else if (action === 'delete-schema') deleteImage('schema');
+                    else if (action === 'delete-drawing') deleteImage('drawing');
+                }, 200);
+            } else {
+                adminCodeInput.classList.add('error');
+                adminError.classList.add('show');
+                setTimeout(() => adminCodeInput.classList.remove('error'), 500);
+                adminCodeInput.select();
+            }
+        }
+
+        // Обработчики кнопок
+        uploadSchemaBtn.addEventListener('click', () => {
+            if (hasStoredImage('schema')) {
+                // Удалить
+                if (isAdmin) {
+                    deleteImage('schema');
+                } else {
+                    openAdminModal('delete-schema');
                 }
             } else {
-                if (isPaused && waveBtn.innerHTML.includes('Возобновить')) {
-                    isPaused = false;
-                    startTime = performance.now() - pausedTime;
-                    waveAnimationFrame = requestAnimationFrame(waveLoop);
+                // Загрузить
+                if (isAdmin) {
+                    uploadSchemaInput.click();
+                } else {
+                    openAdminModal('upload-schema');
                 }
             }
         });
 
-        // --- 7. ЗАГРУЗКА КАРТИНОК ---
-        function loadImage(event, imgId, placeholderId) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById(imgId);
-                    const placeholder = document.getElementById(placeholderId);
-                    img.src = e.target.result;
-                    img.style.display = 'block';
-                    placeholder.style.display = 'none';
-                };
-                reader.readAsDataURL(file);
+        uploadDrawingBtn.addEventListener('click', () => {
+            if (hasStoredImage('drawing')) {
+                if (isAdmin) {
+                    deleteImage('drawing');
+                } else {
+                    openAdminModal('delete-drawing');
+                }
+            } else {
+                if (isAdmin) {
+                    uploadDrawingInput.click();
+                } else {
+                    openAdminModal('upload-drawing');
+                }
             }
+        });
+
+        adminCancel.addEventListener('click', closeAdminModal);
+        adminConfirm.addEventListener('click', checkAdminCode);
+        adminCodeInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); checkAdminCode(); }
+        });
+        adminModal.addEventListener('click', (e) => {
+            if (e.target === adminModal) closeAdminModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && adminModal.classList.contains('open')) closeAdminModal();
+        });
+        adminLogoutBtn.addEventListener('click', () => {
+            isAdmin = false;
+            sessionStorage.removeItem('admin');
+            updateAdminUI();
+            showToast('Вы вышли из режима администратора', 'info');
+        });
+
+        updateAdminUI();
+
+        // --- 11. ИИ-ПОМОЩНИК ---
+        const aiWidget = document.getElementById('aiWidget');
+        const aiToggle = document.getElementById('aiToggle');
+        const aiCloseBtn = document.getElementById('aiCloseBtn');
+        const aiMessages = document.getElementById('aiMessages');
+        const aiForm = document.getElementById('aiForm');
+        const aiInput = document.getElementById('aiInput');
+        const aiSuggestions = document.getElementById('aiSuggestions');
+
+        let isChatOpen = false;
+
+        const knowledgeBase = [
+            { keywords: ['привет', 'здравствуй', 'хай', 'добрый', 'hello', 'hi', 'прив', 'ку'], answer: 'Здравствуйте! 👋 Рад вас видеть.<br><br>Я ИИ-помощник системы «Умный Свет». Могу рассказать о:<br><br>⚙️ <strong>Принципе работы</strong><br>🔧 <strong>Характеристиках</strong><br>💰 <strong>Экономии</strong><br>🌊 <strong>Бегущей волне</strong><br>🌍 <strong>Мировом опыте</strong><br><br>Что вас интересует?' },
+            { keywords: ['экономи', 'энерг', 'потреб', 'счет', 'тариф', 'выгод', 'окуп', 'деньг', 'затрат', 'дешев'], answer: '💰 <strong>Экономическая эффективность:</strong><br><br>• Снижение энергопотребления на <strong>50–70%</strong><br>• Окупаемость — <strong>2–3 года</strong><br>• Стоимость светильников +30–40% к обычным LED<br>• Ниже затраты на обслуживание<br>• Нет расходов на кабельные сети управления<br><br>Подробнее в разделе <a href="#economy" style="color:#00d2ff;text-decoration:underline;">«Эффективность»</a>.' },
+            { keywords: ['работ', 'принцип', 'как работает', 'алгоритм', 'режим', 'ярк', 'датчик', 'движен', 'пир', 'pir'], answer: '⚙️ <strong>Как работает система:</strong><br><br><strong>1. Дежурный режим</strong> — 30% яркости<br><strong>2. Активация</strong> — 100% при приближении на 10–15 м<br><strong>3. Эффект «шлейфа»</strong> — 55% у соседних фонарей<br><br>Свет «бежит» впереди человека. Подробнее в разделе <a href="#logic" style="color:#00d2ff;text-decoration:underline;">«Алгоритм»</a>.' },
+            { keywords: ['характер', 'параметр', 'техн', 'солнеч', 'панел', 'аккум', 'батар', 'led', 'tp4056', 'bc557', 'pir', 'вольт', 'мах'], answer: '🔧 <strong>Характеристики:</strong><br><br>☀️ Солнечная панель: <strong>7V / 3.5W</strong><br>🔋 Аккумулятор: <strong>18650 Li-Ion, 3.7V, 2200mAh</strong><br>⚡ Контроллер: <strong>TP4056</strong><br>💡 Светодиоды: <strong>4V LED SMD</strong><br>🔌 Коммутация: <strong>BC557 PNP</strong><br>📡 Датчик: <strong>PIR, до 10–15 м</strong><br><br>В разделе <a href="#specs" style="color:#00d2ff;text-decoration:underline;">«Характеристики»</a>.' },
+            { keywords: ['сеть', 'волн', 'шлейф', 'mesh', 'сосед', 'бегущ'], answer: '🌊 <strong>Эффект «бегущей волны»:</strong><br><br>• Фонарь рядом с человеком — <strong>100%</strong><br>• Два соседних — <strong>~55%</strong> (готовность)<br>• Остальные — <strong>30%</strong> (дежурный)<br><br>Смотрите демонстрацию в разделе <a href="#wave" style="color:#00d2ff;text-decoration:underline;">«Сеть»</a>.' },
+            { keywords: ['опыт', 'мир', 'берлин', 'осло', 'анадыр', 'пример', 'аналог'], answer: '🌍 <strong>Мировой опыт:</strong><br><br>🇩🇪 Берлин — экономия 60%<br>🇷🇺 Анадырь — до 73%<br>🇳🇴 Осло — радарные датчики на велодорожках<br><br>В разделе <a href="#economy" style="color:#00d2ff;text-decoration:underline;">«Эффективность»</a>.' },
+            { keywords: ['схем', 'чертеж', 'документ', 'картинк', 'фото'], answer: '📐 <strong>Документация:</strong><br><br>• Принципиальная схема подключения<br>• Чертеж корпуса<br><br>Переключайтесь между вкладками в разделе <a href="#docs" style="color:#00d2ff;text-decoration:underline;">«Документация»</a>.' },
+            { keywords: ['безопас', 'опасн', 'защит', 'нападен', 'травм', 'темн'], answer: '🛡️ <strong>Безопасность:</strong><br><br>• Яркий свет именно там, где человек<br>• Датчик срабатывает за 10–15 м<br>• Световой шлейф = непрерывная освещённая дорожка<br>• Автономная работа даже при отключении сети' },
+            { keywords: ['эколог', 'загрязн', 'небо', 'природ', 'фаун'], answer: '🌱 <strong>Экология:</strong><br><br>• Минимальное световое загрязнение неба<br>• Снижение воздействия на фауну<br>• Солнечная энергия — возобновляемая<br>• Меньше электронных отходов' },
+            { keywords: ['контакт', 'связ', 'почт', 'куп', 'заказ', 'цена', 'стоим'], answer: '📞 По вопросам сотрудничества — контакты в футере сайта. Рады обсудить внедрение! 🌳' },
+            { keywords: ['ты кто', 'кто ты', 'бот', 'помощник', 'ии', 'ai'], answer: '🤖 Я <strong>ИИ-помощник</strong> системы «Умный Свет». Отвечаю на вопросы о продукте 24/7.' },
+            { keywords: ['спасибо', 'благодар', 'круто', 'класс', 'супер'], answer: 'Рад помочь! 😊' },
+            { keywords: ['пауза', 'остановить', 'люди', 'пешеход'], answer: '⏸️ Кнопка «Пауза» в разделе «Сеть» плавно останавливает людей. Фонари продолжают освещать остановившихся.' },
+            { keywords: ['фонарь', 'светильник', 'продукт', 'систем'], answer: '💡 Автономные уличные светильники с PIR-датчиками и mesh-сетью. Три режима яркости (30% / 55% / 100%). Подробнее в разделе <a href="#specs" style="color:#00d2ff;text-decoration:underline;">«Характеристики»</a>.' }
+        ];
+
+        const quickSuggestions = ['Как это работает?', 'Какая экономия?', 'Характеристики', 'Мировой опыт', 'Показать схему', 'Бегущая волна'];
+
+        function normalizeText(text) {
+            return text.toLowerCase().replace(/[^\wа-яё\s]/gi, '').replace(/\s+/g, ' ').trim();
         }
+
+        function getBotAnswer(userText) {
+            const text = normalizeText(userText);
+            if (!text) return '🤔 Вы не написали вопрос.';
+            
+            let bestMatch = null, bestScore = 0;
+            knowledgeBase.forEach(item => {
+                let score = 0;
+                item.keywords.forEach(kw => {
+                    const nkw = normalizeText(kw);
+                    if (text.includes(nkw)) {
+                        score += nkw.length * 2;
+                        if (text.startsWith(nkw)) score += 5;
+                    }
+                });
+                if (score > bestScore) { bestScore = score; bestMatch = item; }
+            });
+            
+            if (bestMatch && bestScore > 3) return bestMatch.answer;
+            
+            return '🤔 Не уверен, что понял. Попробуйте:<br><br>• «Как работает система?»<br>• «Сколько экономит?»<br>• «Какие характеристики?»<br>• «Что такое бегущая волна?»<br>• «Покажи схему»<br><br>Или выберите вопрос ниже 👇';
+        }
+
+        function addMessage(text, sender) {
+            const msg = document.createElement('div');
+            msg.className = `ai-message ${sender}`;
+            msg.innerHTML = text;
+            aiMessages.appendChild(msg);
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+            return msg;
+        }
+
+        function showTyping() {
+            const typing = document.createElement('div');
+            typing.className = 'ai-message bot typing';
+            typing.innerHTML = '<span></span><span></span><span></span>';
+            aiMessages.appendChild(typing);
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+            return typing;
+        }
+
+        function renderSuggestions() {
+            aiSuggestions.innerHTML = '';
+            quickSuggestions.forEach(text => {
+                const btn = document.createElement('button');
+                btn.className = 'ai-suggestion';
+                btn.textContent = text;
+                btn.type = 'button';
+                btn.addEventListener('click', () => handleUserInput(text));
+                aiSuggestions.appendChild(btn);
+            });
+        }
+
+        function handleUserInput(text) {
+            if (!text.trim()) return;
+            addMessage(text, 'user');
+            aiInput.value = '';
+            aiSuggestions.style.display = 'none';
+            const typing = showTyping();
+            setTimeout(() => {
+                typing.remove();
+                const answer = getBotAnswer(text);
+                addMessage(answer, 'bot');
+                if (answer.length < 200) {
+                    setTimeout(() => {
+                        aiSuggestions.style.display = 'flex';
+                        renderSuggestions();
+                    }, 800);
+                } else {
+                    setTimeout(() => {
+                        if (isChatOpen) {
+                            aiSuggestions.style.display = 'flex';
+                            renderSuggestions();
+                        }
+                    }, 3000);
+                }
+            }, 500 + Math.random() * 700);
+        }
+
+        function toggleChat() {
+            isChatOpen = !isChatOpen;
+            aiWidget.classList.toggle('open', isChatOpen);
+            if (isChatOpen && aiMessages.children.length === 0) {
+                setTimeout(() => {
+                    addMessage('Здравствуйте! 👋 Я <strong>ИИ-помощник</strong> системы «Умный Свет».<br><br>Могу рассказать о принципе работы, характеристиках, экономии, мировом опыте или помочь с навигацией по сайту.<br><br>Что вас интересует?', 'bot');
+                    renderSuggestions();
+                }, 400);
+            }
+            if (isChatOpen) setTimeout(() => aiInput.focus(), 400);
+        }
+
+        aiToggle.addEventListener('click', toggleChat);
+        aiCloseBtn.addEventListener('click', toggleChat);
+        aiForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleUserInput(aiInput.value);
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isChatOpen) toggleChat();
+        });
     </script>
 </body>
 </html>
