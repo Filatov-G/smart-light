@@ -979,6 +979,7 @@
         .img-placeholder svg { width: 40px; height: 40px; fill: #4a5065; margin-bottom: 1rem; }
         .image-container img[src=""] { display: none; }
 
+        /* ПАНЕЛЬ УПРАВЛЕНИЯ ФОТО */
         .upload-panel {
             position: fixed; bottom: 20px; right: 20px;
             background: linear-gradient(145deg, rgba(35, 42, 60, 0.95) 0%, rgba(25, 30, 45, 0.95) 100%);
@@ -991,12 +992,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: var(--transition);
             min-width: 200px;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .upload-panel.admin-mode {
-            opacity: 1;
-            pointer-events: all;
         }
         .upload-panel h4 { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .upload-btn {
@@ -1458,6 +1453,199 @@
         }
         .ai-send svg { width: 18px; height: 18px; fill: #fff; margin-left: 2px; }
 
+        /* МОДАЛЬНОЕ ОКНО АДМИНА */
+        .admin-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .admin-modal.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .admin-modal-content {
+            background: linear-gradient(145deg, rgba(35, 42, 60, 0.98) 0%, rgba(20, 25, 40, 0.98) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 210, 255, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .admin-modal.open .admin-modal-content {
+            transform: scale(1);
+        }
+        .admin-modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .admin-lock-icon {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 210, 255, 0.12);
+            border: 2px solid rgba(0, 210, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            animation: lockPulse 2.5s infinite;
+        }
+        @keyframes lockPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.3); }
+            50% { box-shadow: 0 0 0 12px rgba(0, 210, 255, 0); }
+        }
+        .admin-lock-icon svg {
+            width: 28px; height: 28px;
+            fill: var(--accent-cyan);
+        }
+        .admin-modal-header h3 {
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .admin-modal-header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .admin-modal-body {
+            margin-bottom: 1.5rem;
+        }
+        .admin-code-input {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            outline: none;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .admin-code-input::placeholder {
+            color: #5a6075;
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+        .admin-code-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.12);
+            background: rgba(0, 210, 255, 0.05);
+        }
+        .admin-code-input.error {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 4px rgba(255, 59, 59, 0.12);
+            animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+        @keyframes shake {
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(4px); }
+            30%, 50%, 70% { transform: translateX(-6px); }
+            40%, 60% { transform: translateX(6px); }
+        }
+        .admin-error {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0.8rem;
+            padding: 0.7rem 1rem;
+            background: rgba(255, 59, 59, 0.1);
+            border: 1px solid rgba(255, 59, 59, 0.3);
+            border-radius: 10px;
+            color: #ff8080;
+            font-size: 0.85rem;
+        }
+        .admin-error.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        .admin-error svg {
+            width: 16px; height: 16px;
+            fill: #ff8080;
+            flex-shrink: 0;
+        }
+        .admin-modal-footer {
+            display: flex;
+            gap: 10px;
+        }
+        .admin-btn {
+            flex: 1;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .admin-btn-cancel {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--border-color);
+            color: var(--text-muted);
+        }
+        .admin-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .admin-btn-confirm {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+        }
+        .admin-btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
+        }
+        .admin-badge {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 0.4rem 0.8rem;
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .admin-badge.show { display: flex; }
+        .admin-badge svg { width: 12px; height: 12px; fill: var(--accent-green); }
+        .admin-logout-btn {
+            display: none;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid rgba(255, 59, 59, 0.3);
+            color: #ff8080;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .admin-logout-btn:hover { background: rgba(255, 59, 59, 0.1); }
+        .admin-logout-btn.show { display: block; }
+
         @media (max-width: 992px) {
             .hero { flex-direction: column; text-align: center; padding-top: 120px; padding-bottom: 60px; }
             .hero-content { max-width: 100%; }
@@ -1911,6 +2099,7 @@
         </div>
     </section>
 
+    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ ФОТО (ВСЕГДА ВИДНА) -->
     <div class="upload-panel" id="uploadPanel">
         <div class="admin-badge" id="adminBadge">
             <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
@@ -2381,7 +2570,6 @@
         const uploadDrawingBtn = document.getElementById('uploadDrawingBtn');
         const uploadSchemaInput = document.getElementById('upload-schema');
         const uploadDrawingInput = document.getElementById('upload-drawing');
-        const uploadPanel = document.getElementById('uploadPanel');
 
         let pendingAction = null;
         let isAdmin = sessionStorage.getItem('admin') === 'true';
@@ -2390,11 +2578,9 @@
             if (isAdmin) {
                 adminBadge.classList.add('show');
                 adminLogoutBtn.classList.add('show');
-                uploadPanel.classList.add('admin-mode');
             } else {
                 adminBadge.classList.remove('show');
                 adminLogoutBtn.classList.remove('show');
-                uploadPanel.classList.remove('admin-mode');
             }
         }
 
