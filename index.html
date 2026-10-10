@@ -586,11 +586,11 @@
             min-height: 40px;
         }
         .price-amount {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             color: var(--accent-cyan);
             margin-bottom: 0.3rem;
-            line-height: 1;
+            line-height: 1.1;
         }
         .price-amount small {
             font-size: 1rem;
@@ -991,6 +991,12 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: var(--transition);
             min-width: 200px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .upload-panel.admin-mode {
+            opacity: 1;
+            pointer-events: all;
         }
         .upload-panel h4 { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .upload-btn {
@@ -1687,7 +1693,7 @@
     <section id="price" class="price-section">
         <div class="section-header reveal">
             <h2>Стоимость и тарифы</h2>
-            <p>Гибкая система оплаты: покупка оборудования + подписка на обслуживание</p>
+            <p>Гибкая система: разовая покупка комплекта под задачу парка</p>
         </div>
 
         <div class="price-grid">
@@ -1695,13 +1701,14 @@
             <div class="price-card reveal">
                 <h3>Старт</h3>
                 <p class="price-desc">Для небольших парков и пилотных проектов</p>
-                <div class="price-amount">7 000 <small>₽</small></div>
-                <div class="price-period">за 1 фонарь</div>
+                <div class="price-amount">25 000 <small>₽</small></div>
+                <div class="price-period">базовый комплект</div>
                 <ul class="price-features">
-                    <li>Светильник с датчиком</li>
-                    <li>Солнечная панель + аккумулятор</li>
+                    <li>Светильники с датчиками</li>
+                    <li>Солнечные панели + аккумуляторы</li>
                     <li>Базовые настройки яркости</li>
                     <li>Гарантия 1 год</li>
+                    <li>Инструкция по монтажу</li>
                 </ul>
                 <button class="price-btn" onclick="openOrderModal('Старт')">Заказать</button>
             </div>
@@ -1709,10 +1716,11 @@
             <div class="price-card featured reveal" style="transition-delay: 0.1s;">
                 <h3>Оптимальный</h3>
                 <p class="price-desc">Для городских парков и аллей</p>
-                <div class="price-amount">5 000 <small>₽/мес</small></div>
-                <div class="price-period">подписка «Умный парк»</div>
+                <div class="price-amount">50 000 – 200 000 <small>₽</small></div>
+                <div class="price-period">проект под задачу</div>
                 <ul class="price-features">
                     <li>Всё из тарифа «Старт»</li>
+                    <li>Расширенная комплектация</li>
                     <li>Аналитика и отчёты</li>
                     <li>Мониторинг 24/7</li>
                     <li>Плановое ТО</li>
@@ -1724,14 +1732,15 @@
             <div class="price-card reveal" style="transition-delay: 0.2s;">
                 <h3>Сеть</h3>
                 <p class="price-desc">Для крупных территорий и «умных городов»</p>
-                <div class="price-amount">от 20 000 <small>₽/мес</small></div>
-                <div class="price-period">корпоративная подписка</div>
+                <div class="price-amount">500 000 – 1 000 000 <small>₽</small></div>
+                <div class="price-period">комплексный проект</div>
                 <ul class="price-features">
                     <li>Всё из тарифа «Оптимальный»</li>
                     <li>Интеграция с другими системами</li>
                     <li>API для городских служб</li>
                     <li>Персональный менеджер</li>
                     <li>Кастомизация под заказчика</li>
+                    <li>Обучение персонала</li>
                 </ul>
                 <button class="price-btn" onclick="openOrderModal('Сеть')">Заказать</button>
             </div>
@@ -2372,6 +2381,7 @@
         const uploadDrawingBtn = document.getElementById('uploadDrawingBtn');
         const uploadSchemaInput = document.getElementById('upload-schema');
         const uploadDrawingInput = document.getElementById('upload-drawing');
+        const uploadPanel = document.getElementById('uploadPanel');
 
         let pendingAction = null;
         let isAdmin = sessionStorage.getItem('admin') === 'true';
@@ -2380,9 +2390,11 @@
             if (isAdmin) {
                 adminBadge.classList.add('show');
                 adminLogoutBtn.classList.add('show');
+                uploadPanel.classList.add('admin-mode');
             } else {
                 adminBadge.classList.remove('show');
                 adminLogoutBtn.classList.remove('show');
+                uploadPanel.classList.remove('admin-mode');
             }
         }
 
@@ -2550,7 +2562,7 @@
             },
             {
                 keywords: ['цена', 'стоим', 'сколько', 'тариф', 'прайс', 'заказ', 'куп', 'подписк'],
-                answer: '💰 <strong>Стоимость и тарифы:</strong><br><br>🔹 <strong>Старт</strong> — 7 000 ₽ за фонарь<br>🔹 <strong>Оптимальный</strong> — от 5 000 ₽/мес (подписка «Умный парк»)<br>🔹 <strong>Сеть</strong> — от 20 000 ₽/мес (для городов)<br><br>Нажмите <strong>«Заказать»</strong> — оставите заявку.<br><br>Подробнее в разделе <a href="#price" style="color:#00d2ff;text-decoration:underline;">«Стоимость»</a>.'
+                answer: '💰 <strong>Стоимость и тарифы:</strong><br><br>🔹 <strong>Старт</strong> — 25 000 ₽ (базовый комплект)<br>🔹 <strong>Оптимальный</strong> — 50 000 – 200 000 ₽ (проект)<br>🔹 <strong>Сеть</strong> — 500 000 – 1 000 000 ₽ (комплексный проект)<br><br>Нажмите <strong>«Заказать»</strong> — оставите заявку.<br><br>Подробнее в разделе <a href="#price" style="color:#00d2ff;text-decoration:underline;">«Стоимость»</a>.'
             },
             {
                 keywords: ['работ', 'принцип', 'как работает', 'алгоритм', 'режим', 'ярк', 'датчик', 'движен', 'пир', 'pir'],
