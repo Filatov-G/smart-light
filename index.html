@@ -16,13 +16,15 @@
             --accent-glow: rgba(0, 210, 255, 0.35);
             --accent-red: #ff3b3b;
             --accent-green: #00e676;
+            --accent-yellow: #f6e05e;
             --text-main: #e8ecf4;
             --text-muted: #a8b0c0;
             --border-color: rgba(255, 255, 255, 0.12);
             --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -68,6 +70,7 @@
             text-transform: uppercase;
             color: #fff;
             display: flex; align-items: center; gap: 10px;
+            text-decoration: none;
         }
         .logo-dot {
             width: 8px; height: 8px;
@@ -152,7 +155,6 @@
         .stat-item h4 { font-size: 1.8rem; font-weight: 800; color: #fff; }
         .stat-item p { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* === ВИЗУАЛЬНАЯ ЧАСТЬ HERO С КАРУСЕЛЬЮ === */
         .hero-visual {
             flex: 1;
             display: flex; justify-content: center; align-items: center;
@@ -168,7 +170,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .hero-slide {
             position: absolute;
             inset: 0;
@@ -180,14 +181,11 @@
             transition: opacity 0.5s ease, transform 0.5s ease;
             pointer-events: none;
         }
-
         .hero-slide.active {
             opacity: 1;
             transform: scale(1);
             pointer-events: all;
         }
-
-        /* Слайд с фото фонаря */
         .hero-slide-photo {
             width: 100%;
             height: 100%;
@@ -197,7 +195,6 @@
             justify-content: center;
             padding: 20px;
         }
-
         .hero-photo-wrapper {
             position: relative;
             width: 100%;
@@ -209,7 +206,6 @@
             background: linear-gradient(145deg, rgba(35, 42, 60, 0.6) 0%, rgba(20, 25, 40, 0.8) 100%);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 210, 255, 0.15);
         }
-
         .hero-photo-wrapper img {
             width: 100%;
             height: 100%;
@@ -218,9 +214,6 @@
             opacity: 0.95;
             transition: opacity 0.3s ease;
         }
-
-        .hero-photo-wrapper:hover img { opacity: 1; }
-
         .hero-photo-placeholder {
             position: absolute;
             inset: 0;
@@ -233,73 +226,40 @@
             text-align: center;
             padding: 2rem;
         }
-
         .hero-photo-placeholder svg {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             fill: #4a5065;
             margin-bottom: 1rem;
         }
+        .hero-photo-caption { margin-top: 1.5rem; text-align: center; }
+        .hero-photo-caption h3 { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; }
+        .hero-photo-caption p { color: var(--text-muted); font-size: 0.9rem; }
 
-        .hero-photo-caption {
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-
-        .hero-photo-caption h3 {
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.3rem;
-        }
-
-        .hero-photo-caption p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* Стрелки карусели */
         .hero-carousel-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             border-radius: 50%;
             background: rgba(0, 210, 255, 0.15);
             border: 1px solid rgba(0, 210, 255, 0.4);
             color: var(--accent-cyan);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             transition: all 0.3s ease;
             z-index: 20;
             backdrop-filter: blur(10px);
         }
-
         .hero-carousel-arrow:hover {
             background: var(--accent-cyan);
             color: #000;
             box-shadow: 0 0 25px var(--accent-glow);
             transform: translateY(-50%) scale(1.1);
         }
+        .hero-carousel-arrow svg { width: 22px; height: 22px; fill: currentColor; }
+        .hero-carousel-arrow.prev { left: -70px; }
+        .hero-carousel-arrow.next { right: -70px; }
 
-        .hero-carousel-arrow svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-        }
-
-        .hero-carousel-arrow.prev {
-            left: -70px;
-        }
-
-        .hero-carousel-arrow.next {
-            right: -70px;
-        }
-
-        /* Точки-индикаторы */
         .hero-carousel-dots {
             position: absolute;
             bottom: -60px;
@@ -309,10 +269,8 @@
             gap: 10px;
             z-index: 20;
         }
-
         .hero-carousel-dot {
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             border: none;
@@ -320,7 +278,6 @@
             transition: all 0.3s ease;
             padding: 0;
         }
-
         .hero-carousel-dot.active {
             background: var(--accent-cyan);
             box-shadow: 0 0 10px var(--accent-cyan);
@@ -328,7 +285,6 @@
             border-radius: 5px;
         }
 
-        /* Обертка вокруг слайда-фонаря (без карусели) */
         .lamp-slide-wrapper {
             display: flex;
             align-items: center;
@@ -336,7 +292,6 @@
             width: 100%;
             height: 100%;
         }
-
         .lamp-container {
             position: relative;
             width: 300px; height: 500px;
@@ -475,6 +430,34 @@
         }
         .timer-display.active { opacity: 1; }
 
+        .order-btn {
+            position: absolute;
+            bottom: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border: none;
+            color: #fff;
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 20;
+            white-space: nowrap;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.4);
+        }
+        .order-btn:hover {
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.6);
+        }
+        .order-btn svg { width: 18px; height: 18px; fill: #fff; }
+
         .problem-section {
             padding: 6rem 5%;
             max-width: 1200px;
@@ -541,6 +524,132 @@
         .spec-card h3 { font-size: 1.1rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
         .spec-value { font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 0.5rem; }
         .spec-desc { font-size: 0.9rem; color: var(--text-muted); }
+
+        .price-section {
+            padding: 8rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .price-card {
+            background: linear-gradient(145deg, rgba(35, 42, 60, 0.8) 0%, rgba(25, 30, 45, 0.85) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            transition: var(--transition);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .price-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 25px 60px rgba(0, 210, 255, 0.2);
+        }
+        .price-card.featured {
+            border-color: rgba(0, 210, 255, 0.5);
+            background: linear-gradient(145deg, rgba(0, 210, 255, 0.08) 0%, rgba(25, 30, 45, 0.9) 100%);
+        }
+        .price-card.featured::before {
+            content: 'Популярное';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #fff;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .price-card h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .price-card .price-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            min-height: 40px;
+        }
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent-cyan);
+            margin-bottom: 0.3rem;
+            line-height: 1;
+        }
+        .price-amount small {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .price-period {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        .price-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+        .price-features li {
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .price-features li::before {
+            content: '✓';
+            color: var(--accent-green);
+            font-weight: 900;
+            font-size: 1rem;
+        }
+        .price-btn {
+            padding: 0.9rem 1.5rem;
+            border-radius: 50px;
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+        }
+        .price-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        .price-card.featured .price-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.4);
+        }
+        .price-card.featured .price-btn:hover {
+            box-shadow: 0 12px 35px rgba(0, 210, 255, 0.6);
+            transform: translateY(-2px);
+        }
 
         .logic-section {
             background: linear-gradient(180deg, transparent, rgba(0, 210, 255, 0.04), transparent);
@@ -868,6 +977,7 @@
             padding: 2rem; z-index: 0;
         }
         .img-placeholder svg { width: 40px; height: 40px; fill: #4a5065; margin-bottom: 1rem; }
+        .image-container img[src=""] { display: none; }
 
         .upload-panel {
             position: fixed; bottom: 20px; right: 20px;
@@ -901,8 +1011,6 @@
         }
         .upload-btn:hover { background: rgba(0, 210, 255, 0.15); border-color: var(--accent-cyan); }
         .upload-btn span { color: var(--accent-cyan); font-weight: 600; margin-left: 10px; }
-
-        /* Кнопка "Удалить" */
         .upload-btn.delete-mode {
             background: rgba(255, 59, 59, 0.1);
             border-color: rgba(255, 59, 59, 0.35);
@@ -911,22 +1019,207 @@
             background: rgba(255, 59, 59, 0.2);
             border-color: var(--accent-red);
         }
-        .upload-btn.delete-mode span {
-            color: #ff8080;
-        }
+        .upload-btn.delete-mode span { color: #ff8080; }
 
         footer {
             padding: 4rem 5% 2rem;
             background: rgba(5, 8, 15, 0.9);
             border-top: 1px solid var(--border-color);
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
         .footer-logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 1rem; color: #fff; }
         .footer-logo span { color: var(--accent-cyan); }
         .footer-text { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+        .footer-order-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.4);
+        }
+        .footer-order-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.6);
+        }
+        .footer-order-btn svg { width: 18px; height: 18px; fill: #fff; }
         .copyright { color: #5a6075; font-size: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 2rem; }
 
-        /* ИИ-ПОМОЩНИК */
+        .order-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .order-modal.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .order-modal-content {
+            background: linear-gradient(145deg, rgba(35, 42, 60, 0.98) 0%, rgba(20, 25, 40, 0.98) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 210, 255, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .order-modal.open .order-modal-content {
+            transform: scale(1);
+        }
+        .order-modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .order-modal-header h3 {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+        }
+        .order-modal-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .order-modal-close {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .order-modal-close:hover {
+            background: rgba(255, 59, 59, 0.2);
+            border-color: var(--accent-red);
+            color: #ff8080;
+        }
+        .order-modal-close svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .order-form-group { margin-bottom: 1rem; }
+        .order-form-group label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .order-form-input,
+        .order-form-textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .order-form-input::placeholder,
+        .order-form-textarea::placeholder { color: #5a6075; }
+        .order-form-input:focus,
+        .order-form-textarea:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.12);
+            background: rgba(0, 210, 255, 0.05);
+        }
+        .order-form-textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        .order-form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.35);
+            margin-top: 0.5rem;
+        }
+        .order-form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 210, 255, 0.55);
+        }
+        .order-form-note {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+        .order-form-success {
+            display: none;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        .order-form-success.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        .order-form-success .success-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(104, 211, 145, 0.15);
+            border: 2px solid var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: var(--accent-green);
+        }
+        .order-form-success h3 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        .order-form-success p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
         .ai-widget {
             position: fixed;
             bottom: 20px;
@@ -1159,274 +1452,46 @@
         }
         .ai-send svg { width: 18px; height: 18px; fill: #fff; margin-left: 2px; }
 
-        .admin-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 8, 15, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 3000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .admin-modal.open {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .admin-modal-content {
-            background: linear-gradient(145deg, rgba(35, 42, 60, 0.98) 0%, rgba(20, 25, 40, 0.98) 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 440px;
-            width: 100%;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 210, 255, 0.1);
-            transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        .admin-modal.open .admin-modal-content {
-            transform: scale(1);
-        }
-        .admin-modal-header { text-align: center; margin-bottom: 1.5rem; }
-        .admin-lock-icon {
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            background: rgba(0, 210, 255, 0.12);
-            border: 2px solid rgba(0, 210, 255, 0.3);
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1rem;
-            animation: lockPulse 2.5s infinite;
-        }
-        @keyframes lockPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.3); }
-            50% { box-shadow: 0 0 0 12px rgba(0, 210, 255, 0); }
-        }
-        .admin-lock-icon svg {
-            width: 28px; height: 28px;
-            fill: var(--accent-cyan);
-        }
-        .admin-modal-header h3 {
-            color: #fff;
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-        .admin-modal-header p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-        .admin-modal-body { margin-bottom: 1.5rem; }
-        .admin-code-input {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            color: #fff;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            outline: none;
-            transition: all 0.2s ease;
-            text-align: center;
-        }
-        .admin-code-input::placeholder {
-            color: #5a6075;
-            font-weight: 400;
-            letter-spacing: 0;
-        }
-        .admin-code-input:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.12);
-            background: rgba(0, 210, 255, 0.05);
-        }
-        .admin-code-input.error {
-            border-color: var(--accent-red);
-            box-shadow: 0 0 0 4px rgba(255, 59, 59, 0.12);
-            animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
-        }
-        @keyframes shake {
-            10%, 90% { transform: translateX(-2px); }
-            20%, 80% { transform: translateX(4px); }
-            30%, 50%, 70% { transform: translateX(-6px); }
-            40%, 60% { transform: translateX(6px); }
-        }
-        .admin-error {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            margin-top: 0.8rem;
-            padding: 0.7rem 1rem;
-            background: rgba(255, 59, 59, 0.1);
-            border: 1px solid rgba(255, 59, 59, 0.3);
-            border-radius: 10px;
-            color: #ff8080;
-            font-size: 0.85rem;
-        }
-        .admin-error.show {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-        .admin-error svg {
-            width: 16px; height: 16px;
-            fill: #ff8080;
-            flex-shrink: 0;
-        }
-        .admin-modal-footer { display: flex; gap: 10px; }
-        .admin-btn {
-            flex: 1;
-            padding: 0.85rem 1rem;
-            border-radius: 12px;
-            font-family: inherit;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-        }
-        .admin-btn-cancel {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: var(--border-color);
-            color: var(--text-muted);
-        }
-        .admin-btn-cancel:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-        .admin-btn-confirm {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
-        }
-        .admin-btn-confirm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
-        }
-        .admin-badge {
-            display: none;
-            align-items: center;
-            gap: 6px;
-            padding: 0.4rem 0.8rem;
-            background: rgba(0, 230, 118, 0.12);
-            border: 1px solid rgba(0, 230, 118, 0.3);
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--accent-green);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-        .admin-badge.show { display: flex; }
-        .admin-badge svg { width: 12px; height: 12px; fill: var(--accent-green); }
-        .admin-logout-btn {
-            display: none;
-            width: 100%;
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: 1px solid rgba(255, 59, 59, 0.3);
-            color: #ff8080;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .admin-logout-btn:hover { background: rgba(255, 59, 59, 0.1); }
-        .admin-logout-btn.show { display: block; }
-
-        /* Уведомление */
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            padding: 1rem 1.5rem;
-            background: linear-gradient(145deg, rgba(35, 42, 60, 0.98) 0%, rgba(20, 25, 40, 0.98) 100%);
-            border: 1px solid var(--accent-cyan);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 0.9rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 210, 255, 0.2);
-            z-index: 5000;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            max-width: 90%;
-            text-align: center;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
         @media (max-width: 992px) {
             .hero { flex-direction: column; text-align: center; padding-top: 120px; padding-bottom: 60px; }
             .hero-content { max-width: 100%; }
             .hero-description { margin: 0 auto 2rem; }
             .hero-stats { justify-content: center; }
-            .hero-visual { margin-top: 4rem; width: 100%; }
-            .hero-carousel { height: 500px; }
-            .hero-carousel-arrow.prev { left: 0; }
-            .hero-carousel-arrow.next { right: 0; }
-            .hero-carousel-arrow { width: 42px; height: 42px; }
+            .hero-visual { margin-top: 4rem; }
             .nav-links { display: none; }
-            
-            .problem-grid { grid-template-columns: 1fr; }
-            .economy-grid { grid-template-columns: 1fr; }
-            
+            .problem-grid, .economy-grid { grid-template-columns: 1fr; }
             .timeline::after { left: 31px; }
             .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
             .timeline-item.right { left: 0%; }
             .timeline-item.left::after, .timeline-item.right::after { left: 21px; }
-            
-            .upload-panel { 
-                bottom: 10px; right: 10px; left: 10px; 
-                flex-direction: row; flex-wrap: wrap; 
-                align-items: center; justify-content: center; 
-                min-width: auto;
-            }
+            .upload-panel { bottom: 10px; right: 10px; left: 10px; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; }
             .upload-panel h4 { width: 100%; text-align: center; margin-bottom: 0; }
             .upload-btn { flex: 1; min-width: 140px; justify-content: center; }
             .upload-btn span { margin-left: 8px; }
-            
             .wave-demo { height: 320px; }
             .wave-light-cone { border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 100px solid rgba(0, 210, 255, 0.04); }
-            
             .ai-widget { right: 15px; bottom: 90px; }
+            .hero-carousel-arrow.prev { left: 0; }
+            .hero-carousel-arrow.next { right: 0; }
         }
 
         @media (max-width: 576px) {
             .hero-stats { flex-direction: column; gap: 1.5rem; align-items: center; }
             .tabs { flex-direction: column; align-items: center; }
             .tab-btn { width: 100%; max-width: 300px; }
-            .sim-btn { font-size: 0.75rem; padding: 0.8rem 1.2rem; }
+            .sim-btn, .order-btn { font-size: 0.75rem; padding: 0.8rem 1.2rem; }
             .wave-demo { height: 260px; padding: 0 2%; }
             .wave-lamp-head { width: 30px; height: 20px; }
             .wave-lamp-pole { height: 70px; }
             .wave-light-cone { border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 70px solid rgba(0, 210, 255, 0.04); }
-            
-            .hero-carousel { height: 450px; }
-            .hero-carousel-arrow { width: 38px; height: 38px; }
-            .hero-carousel-arrow svg { width: 18px; height: 18px; }
-            
             .ai-widget { bottom: 90px; right: 15px; }
             .ai-toggle { width: 55px; height: 55px; }
-            .ai-panel {
-                width: calc(100vw - 30px);
-                height: calc(100vh - 200px);
-                max-height: 500px;
-                right: -15px;
-            }
-            
+            .ai-panel { width: calc(100vw - 30px); height: calc(100vh - 200px); max-height: 500px; right: -15px; }
             .upload-panel { bottom: 10px !important; }
-            .admin-modal-content { padding: 1.5rem; }
+            .hero-carousel { height: 500px; }
+            .hero-photo-wrapper { max-width: 280px; }
+            .order-modal-content { padding: 1.5rem; }
+            .price-grid { grid-template-columns: 1fr; }
         }
 
         @keyframes pulse {
@@ -1453,13 +1518,14 @@
 <body>
 
     <nav id="navbar">
-        <div class="logo">
+        <a href="#hero" class="logo">
             <div class="logo-dot"></div>
             УМНЫЙ<span>СВЕТ</span>
-        </div>
+        </a>
         <div class="nav-links">
             <a href="#problem">Проблема</a>
             <a href="#specs">Характеристики</a>
+            <a href="#price">Цены</a>
             <a href="#logic">Алгоритм</a>
             <a href="#wave">Сеть</a>
             <a href="#economy">Эффективность</a>
@@ -1495,33 +1561,31 @@
         <div class="hero-visual reveal">
             <div class="hero-carousel" id="heroCarousel">
                 
-                <!-- СЛАЙД 1: Симуляция фонаря -->
                 <div class="hero-slide active" data-slide="0">
                     <div class="lamp-slide-wrapper">
                         <div class="lamp-container" id="lampSim">
                             <div class="light-cone"></div>
-                            
                             <div class="lamp-body">
                                 <div class="solar-panel">
                                     <div class="pir-sensor" id="pirSensor"></div>
                                 </div>
                                 <div class="led-strip" id="ledStrip"></div>
                             </div>
-                            
                             <div class="lamp-pole"></div>
                             <div class="pedestrian" id="pedestrian"></div>
-                            
                             <button class="sim-btn" id="simBtn">
                                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
                                 Симулировать движение
                             </button>
-                            
+                            <button class="order-btn" id="heroOrderBtn">
+                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                Заказать
+                            </button>
                             <div class="timer-display" id="timerDisplay">Возврат в экономию: 3с</div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- СЛАЙД 2: Фото фонаря -->
                 <div class="hero-slide" data-slide="1">
                     <div class="hero-slide-photo">
                         <div class="hero-photo-wrapper">
@@ -1541,7 +1605,6 @@
                     </div>
                 </div>
 
-                <!-- Стрелки -->
                 <button class="hero-carousel-arrow prev" id="heroCarouselPrev" aria-label="Предыдущий слайд" type="button">
                     <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
                 </button>
@@ -1549,7 +1612,6 @@
                     <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
                 </button>
 
-                <!-- Точки -->
                 <div class="hero-carousel-dots">
                     <button class="hero-carousel-dot active" data-slide-target="0" aria-label="Слайд 1" type="button"></button>
                     <button class="hero-carousel-dot" data-slide-target="1" aria-label="Слайд 2" type="button"></button>
@@ -1619,6 +1681,61 @@
                 <div class="spec-value">PIR Сенсор</div>
                 <p class="spec-desc">Высокая чувствительность, обнаружение на расстоянии до 10–15 метров.</p>
             </div>
+        </div>
+    </section>
+
+    <section id="price" class="price-section">
+        <div class="section-header reveal">
+            <h2>Стоимость и тарифы</h2>
+            <p>Гибкая система оплаты: покупка оборудования + подписка на обслуживание</p>
+        </div>
+
+        <div class="price-grid">
+            
+            <div class="price-card reveal">
+                <h3>Старт</h3>
+                <p class="price-desc">Для небольших парков и пилотных проектов</p>
+                <div class="price-amount">7 000 <small>₽</small></div>
+                <div class="price-period">за 1 фонарь</div>
+                <ul class="price-features">
+                    <li>Светильник с датчиком</li>
+                    <li>Солнечная панель + аккумулятор</li>
+                    <li>Базовые настройки яркости</li>
+                    <li>Гарантия 1 год</li>
+                </ul>
+                <button class="price-btn" onclick="openOrderModal('Старт')">Заказать</button>
+            </div>
+
+            <div class="price-card featured reveal" style="transition-delay: 0.1s;">
+                <h3>Оптимальный</h3>
+                <p class="price-desc">Для городских парков и аллей</p>
+                <div class="price-amount">5 000 <small>₽/мес</small></div>
+                <div class="price-period">подписка «Умный парк»</div>
+                <ul class="price-features">
+                    <li>Всё из тарифа «Старт»</li>
+                    <li>Аналитика и отчёты</li>
+                    <li>Мониторинг 24/7</li>
+                    <li>Плановое ТО</li>
+                    <li>Приоритетная поддержка</li>
+                </ul>
+                <button class="price-btn" onclick="openOrderModal('Оптимальный')">Заказать</button>
+            </div>
+
+            <div class="price-card reveal" style="transition-delay: 0.2s;">
+                <h3>Сеть</h3>
+                <p class="price-desc">Для крупных территорий и «умных городов»</p>
+                <div class="price-amount">от 20 000 <small>₽/мес</small></div>
+                <div class="price-period">корпоративная подписка</div>
+                <ul class="price-features">
+                    <li>Всё из тарифа «Оптимальный»</li>
+                    <li>Интеграция с другими системами</li>
+                    <li>API для городских служб</li>
+                    <li>Персональный менеджер</li>
+                    <li>Кастомизация под заказчика</li>
+                </ul>
+                <button class="price-btn" onclick="openOrderModal('Сеть')">Заказать</button>
+            </div>
+
         </div>
     </section>
 
@@ -1807,6 +1924,10 @@
     <footer>
         <div class="footer-logo">УМНЫЙ<span>СВЕТ</span></div>
         <p class="footer-text">Адаптивная система освещения для городских парков. Инвестиции в качество жизни.</p>
+        <button class="footer-order-btn" onclick="openOrderModal('Общий запрос')">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            Оставить заявку на заказ
+        </button>
         <div class="copyright">
             &copy; 2026 Умный Свет. Все права защищены.
         </div>
@@ -1844,6 +1965,55 @@
         </div>
     </div>
 
+    <div class="order-modal" id="orderModal">
+        <div class="order-modal-content">
+            <button class="order-modal-close" id="orderModalClose" aria-label="Закрыть" type="button">
+                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+            
+            <div class="order-modal-header">
+                <h3>Заявка на «Умный свет»</h3>
+                <p>Оставьте контакты — свяжемся в течение 1 рабочего дня</p>
+            </div>
+            
+            <form class="order-form" id="orderForm">
+                <div class="order-form-group">
+                    <label for="orderName">Ваше имя *</label>
+                    <input type="text" class="order-form-input" id="orderName" placeholder="Иван Иванов" required>
+                </div>
+                
+                <div class="order-form-group">
+                    <label for="orderPhone">Телефон *</label>
+                    <input type="tel" class="order-form-input" id="orderPhone" placeholder="+7 (___) ___-__-__" required>
+                </div>
+                
+                <div class="order-form-group">
+                    <label for="orderCity">Город</label>
+                    <input type="text" class="order-form-input" id="orderCity" placeholder="Москва">
+                </div>
+                
+                <div class="order-form-group">
+                    <label for="orderCount">Количество фонарей</label>
+                    <input type="text" class="order-form-input" id="orderCount" placeholder="10">
+                </div>
+                
+                <div class="order-form-group">
+                    <label for="orderComment">Комментарий</label>
+                    <textarea class="order-form-textarea" id="orderComment" placeholder="Расскажите о вашей задаче..."></textarea>
+                </div>
+                
+                <button type="submit" class="order-form-submit">Отправить заявку</button>
+                <p class="order-form-note">Нажимая кнопку, вы соглашаетесь на обработку данных</p>
+            </form>
+            
+            <div class="order-form-success" id="orderFormSuccess">
+                <div class="success-icon">✓</div>
+                <h3>Заявка отправлена!</h3>
+                <p>Мы свяжемся с вами в течение 1 рабочего дня для уточнения деталей.</p>
+            </div>
+        </div>
+    </div>
+
     <div class="ai-widget" id="aiWidget">
         <button class="ai-toggle" id="aiToggle" aria-label="Открыть помощника" type="button">
             <svg class="ai-icon-chat" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
@@ -1877,10 +2047,17 @@
         </div>
     </div>
 
-    <!-- Уведомление -->
-    <div class="toast" id="toast"></div>
-
     <script>
+        // =========================================================
+        // НАСТРОЙКИ
+        // =========================================================
+        const ORDER_EMAIL = 'filatovgrigorii11072010@yandex.ru'; // ← ЗАМЕНИТЕ НА СВОЮ ПОЧТУ
+        const DEV_CODE = 'Формула успеха';
+        const STORAGE_KEYS = {
+            schema: 'smartLight_schema',
+            drawing: 'smartLight_drawing'
+        };
+
         // --- 1. СКРОЛЛ НАВИГАЦИИ ---
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
@@ -1894,13 +2071,14 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    if (entry.target.classList.contains('spec-card')) initCardHover(entry.target);
+                    if (entry.target.classList.contains('spec-card') || entry.target.classList.contains('price-card')) {
+                        initCardHover(entry.target);
+                    }
                 }
             });
         }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
         revealElements.forEach(el => revealObserver.observe(el));
 
-        // --- 3. ПОДСВЕТКА КАРТОЧЕК ---
         function initCardHover(card) {
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
@@ -1909,7 +2087,7 @@
             });
         }
 
-        // --- 4. ТАБЫ ---
+        // --- 3. ТАБЫ ---
         function switchTab(event, tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -1917,23 +2095,7 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // --- 5. УВЕДОМЛЕНИЕ (TOAST) ---
-        const toast = document.getElementById('toast');
-        let toastTimeout = null;
-        function showToast(message, type = 'info') {
-            toast.textContent = message;
-            toast.style.borderColor = type === 'error' ? 'var(--accent-red)' : 
-                                       type === 'success' ? 'var(--accent-green)' : 
-                                       'var(--accent-cyan)';
-            toast.classList.add('show');
-            
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // --- 6. КАРУСЕЛЬ В HERO ---
+        // --- 4. КАРУСЕЛЬ HERO ---
         const heroSlides = document.querySelectorAll('.hero-slide');
         const heroDots = document.querySelectorAll('.hero-carousel-dot');
         const heroPrev = document.getElementById('heroCarouselPrev');
@@ -1944,40 +2106,18 @@
         function goToSlide(index) {
             if (index < 0) index = totalSlides - 1;
             if (index >= totalSlides) index = 0;
-            
             currentSlide = index;
-            
-            heroSlides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-            
-            heroDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+            heroSlides.forEach((s, i) => s.classList.toggle('active', i === index));
+            heroDots.forEach((d, i) => d.classList.toggle('active', i === index));
         }
 
         heroPrev.addEventListener('click', () => goToSlide(currentSlide - 1));
         heroNext.addEventListener('click', () => goToSlide(currentSlide + 1));
-
         heroDots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                const target = parseInt(dot.dataset.slideTarget);
-                goToSlide(target);
-            });
+            dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slideTarget)));
         });
 
-        // Стрелки клавиатуры для карусели
-        document.addEventListener('keydown', (e) => {
-            const heroRect = document.querySelector('.hero-visual').getBoundingClientRect();
-            const inView = heroRect.top < window.innerHeight && heroRect.bottom > 0;
-            
-            if (inView) {
-                if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
-                if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
-            }
-        });
-
-        // --- 7. СИМУЛЯЦИЯ ФОНАРЯ ---
+        // --- 5. СИМУЛЯЦИЯ ФОНАРЯ ---
         const simBtn = document.getElementById('simBtn');
         const lampSim = document.getElementById('lampSim');
         const pirSensor = document.getElementById('pirSensor');
@@ -2030,7 +2170,7 @@
             returnTimeout = setTimeout(resetToEco, timeLeft * 1000);
         }
 
-        // --- 8. БЕГУЩАЯ ВОЛНА ---
+        // --- 6. БЕГУЩАЯ ВОЛНА ---
         const waveDemo = document.getElementById('waveDemo');
         const waveBtn = document.getElementById('waveBtn');
         const waveLamps = document.querySelectorAll('.wave-lamp');
@@ -2141,13 +2281,7 @@
             }
         });
 
-        // --- 9. ХРАНИЛИЩЕ ФОТО (localStorage) ---
-        const STORAGE_KEYS = {
-            schema: 'smartLight_schema',
-            drawing: 'smartLight_drawing'
-        };
-
-        // Восстановление фото при загрузке страницы
+        // --- 7. ЗАГРУЗКА ФОТО (localStorage) ---
         function restoreImages() {
             ['schema', 'drawing'].forEach(type => {
                 const stored = localStorage.getItem(STORAGE_KEYS[type]);
@@ -2164,7 +2298,6 @@
             });
         }
 
-        // Изменение кнопки на "Удалить"
         function updateButtonToDelete(type) {
             const btnText = document.getElementById(type === 'schema' ? 'schemaBtnText' : 'drawingBtnText');
             const btn = document.getElementById(type === 'schema' ? 'uploadSchemaBtn' : 'uploadDrawingBtn');
@@ -2174,7 +2307,6 @@
             }
         }
 
-        // Возврат кнопки в "Загрузить"
         function updateButtonToUpload(type) {
             const btnText = document.getElementById(type === 'schema' ? 'schemaBtnText' : 'drawingBtnText');
             const btn = document.getElementById(type === 'schema' ? 'uploadSchemaBtn' : 'uploadDrawingBtn');
@@ -2184,72 +2316,51 @@
             }
         }
 
-        // Проверка: есть ли сохранённое фото для типа
         function hasStoredImage(type) {
             return localStorage.getItem(STORAGE_KEYS[type]) !== null;
         }
 
-        // Удаление фото
         function deleteImage(type) {
             const img = document.getElementById(type === 'schema' ? 'img-schema' : 'img-drawing');
             const placeholder = document.getElementById(type === 'schema' ? 'placeholder-schema' : 'placeholder-drawing');
-            
             img.src = '';
             img.style.display = 'none';
             placeholder.style.display = 'flex';
-            
             localStorage.removeItem(STORAGE_KEYS[type]);
             updateButtonToUpload(type);
-            
-            showToast(type === 'schema' ? 'Схема удалена' : 'Чертёж удалён', 'info');
         }
 
-        // Загрузка файла
         function loadImage(event, imgId, placeholderId, type) {
             const file = event.target.files[0];
-            if (!file) {
-                event.target.value = '';
-                return;
-            }
-            
-            // Проверка размера (максимум 2 МБ для надёжного хранения)
+            if (!file) { event.target.value = ''; return; }
             const MAX_SIZE = 2 * 1024 * 1024;
             if (file.size > MAX_SIZE) {
-                showToast('Файл слишком большой (макс. 2 МБ). Сожмите фото на tinypng.com', 'error');
+                alert('Файл слишком большой (макс. 2 МБ). Сожмите фото на tinypng.com');
                 event.target.value = '';
                 return;
             }
-            
             const reader = new FileReader();
             reader.onload = function(e) {
                 const dataUrl = e.target.result;
                 const img = document.getElementById(imgId);
                 const placeholder = document.getElementById(placeholderId);
-                
                 img.src = dataUrl;
                 img.style.display = 'block';
                 placeholder.style.display = 'none';
-                
-                // Попытка сохранить в localStorage
                 try {
                     localStorage.setItem(STORAGE_KEYS[type], dataUrl);
-                    updateButtonToDelete(type);
-                    showToast(type === 'schema' ? 'Схема загружена и сохранена' : 'Чертёж загружен и сохранён', 'success');
                 } catch (err) {
-                    // Если превышен лимит localStorage
-                    showToast('Не удалось сохранить: превышен лимит хранилища. Фото будет только в этой сессии.', 'error');
-                    updateButtonToDelete(type);
+                    alert('Не удалось сохранить фото надолго: превышен лимит хранилища.');
                 }
+                updateButtonToDelete(type);
             };
             reader.readAsDataURL(file);
             event.target.value = '';
         }
 
-        // Восстанавливаем фото при загрузке
         restoreImages();
 
-        // --- 10. ЗАЩИТА КОДОМ ---
-        const DEV_CODE = 'Формула успеха';
+        // --- 8. АДМИН-ЗАЩИТА ---
         const adminModal = document.getElementById('adminModal');
         const adminCodeInput = document.getElementById('adminCodeInput');
         const adminError = document.getElementById('adminError');
@@ -2310,38 +2421,23 @@
             }
         }
 
-        // Обработчики кнопок
         uploadSchemaBtn.addEventListener('click', () => {
             if (hasStoredImage('schema')) {
-                // Удалить
-                if (isAdmin) {
-                    deleteImage('schema');
-                } else {
-                    openAdminModal('delete-schema');
-                }
+                if (isAdmin) deleteImage('schema');
+                else openAdminModal('delete-schema');
             } else {
-                // Загрузить
-                if (isAdmin) {
-                    uploadSchemaInput.click();
-                } else {
-                    openAdminModal('upload-schema');
-                }
+                if (isAdmin) uploadSchemaInput.click();
+                else openAdminModal('upload-schema');
             }
         });
 
         uploadDrawingBtn.addEventListener('click', () => {
             if (hasStoredImage('drawing')) {
-                if (isAdmin) {
-                    deleteImage('drawing');
-                } else {
-                    openAdminModal('delete-drawing');
-                }
+                if (isAdmin) deleteImage('drawing');
+                else openAdminModal('delete-drawing');
             } else {
-                if (isAdmin) {
-                    uploadDrawingInput.click();
-                } else {
-                    openAdminModal('upload-drawing');
-                }
+                if (isAdmin) uploadDrawingInput.click();
+                else openAdminModal('upload-drawing');
             }
         });
 
@@ -2360,12 +2456,79 @@
             isAdmin = false;
             sessionStorage.removeItem('admin');
             updateAdminUI();
-            showToast('Вы вышли из режима администратора', 'info');
         });
 
         updateAdminUI();
 
-        // --- 11. ИИ-ПОМОЩНИК ---
+        // --- 9. МОДАЛЬНОЕ ОКНО ЗАКАЗА ---
+        const orderModal = document.getElementById('orderModal');
+        const orderModalClose = document.getElementById('orderModalClose');
+        const orderForm = document.getElementById('orderForm');
+        const orderFormSuccess = document.getElementById('orderFormSuccess');
+
+        function openOrderModal(tariffName) {
+            orderModal.classList.add('open');
+            orderForm.style.display = 'block';
+            orderFormSuccess.classList.remove('show');
+            document.body.style.overflow = 'hidden';
+            
+            if (tariffName && tariffName !== 'Общий запрос' && tariffName !== 'Главная страница') {
+                const commentField = document.getElementById('orderComment');
+                if (commentField && !commentField.value) {
+                    commentField.value = `Интересует тариф: ${tariffName}`;
+                }
+            }
+        }
+
+        function closeOrderModal() {
+            orderModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        orderModalClose.addEventListener('click', closeOrderModal);
+        orderModal.addEventListener('click', (e) => {
+            if (e.target === orderModal) closeOrderModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && orderModal.classList.contains('open')) closeOrderModal();
+        });
+
+        document.getElementById('heroOrderBtn').addEventListener('click', () => openOrderModal('Главная страница'));
+
+        orderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('orderName').value.trim();
+            const phone = document.getElementById('orderPhone').value.trim();
+            const city = document.getElementById('orderCity').value.trim();
+            const count = document.getElementById('orderCount').value.trim();
+            const comment = document.getElementById('orderComment').value.trim();
+            
+            if (!name || !phone) {
+                alert('Пожалуйста, заполните имя и телефон');
+                return;
+            }
+            
+            const subject = encodeURIComponent('Заявка на «Умный свет»');
+            const body = encodeURIComponent(
+                `Новая заявка с сайта «Умный свет»:\n\n` +
+                `Имя: ${name}\n` +
+                `Телефон: ${phone}\n` +
+                `Город: ${city || '—'}\n` +
+                `Количество фонарей: ${count || '—'}\n` +
+                `Комментарий: ${comment || '—'}\n\n` +
+                `Отправлено: ${new Date().toLocaleString('ru-RU')}`
+            );
+            
+            window.location.href = `mailto:${ORDER_EMAIL}?subject=${subject}&body=${body}`;
+            
+            orderForm.style.display = 'none';
+            orderFormSuccess.classList.add('show');
+            
+            setTimeout(() => { orderForm.reset(); }, 3000);
+        });
+
+        // --- 10. ИИ-ПОМОЩНИК ---
         const aiWidget = document.getElementById('aiWidget');
         const aiToggle = document.getElementById('aiToggle');
         const aiCloseBtn = document.getElementById('aiCloseBtn');
@@ -2377,23 +2540,49 @@
         let isChatOpen = false;
 
         const knowledgeBase = [
-            { keywords: ['привет', 'здравствуй', 'хай', 'добрый', 'hello', 'hi', 'прив', 'ку'], answer: 'Здравствуйте! 👋 Рад вас видеть.<br><br>Я ИИ-помощник системы «Умный Свет». Могу рассказать о:<br><br>⚙️ <strong>Принципе работы</strong><br>🔧 <strong>Характеристиках</strong><br>💰 <strong>Экономии</strong><br>🌊 <strong>Бегущей волне</strong><br>🌍 <strong>Мировом опыте</strong><br><br>Что вас интересует?' },
-            { keywords: ['экономи', 'энерг', 'потреб', 'счет', 'тариф', 'выгод', 'окуп', 'деньг', 'затрат', 'дешев'], answer: '💰 <strong>Экономическая эффективность:</strong><br><br>• Снижение энергопотребления на <strong>50–70%</strong><br>• Окупаемость — <strong>2–3 года</strong><br>• Стоимость светильников +30–40% к обычным LED<br>• Ниже затраты на обслуживание<br>• Нет расходов на кабельные сети управления<br><br>Подробнее в разделе <a href="#economy" style="color:#00d2ff;text-decoration:underline;">«Эффективность»</a>.' },
-            { keywords: ['работ', 'принцип', 'как работает', 'алгоритм', 'режим', 'ярк', 'датчик', 'движен', 'пир', 'pir'], answer: '⚙️ <strong>Как работает система:</strong><br><br><strong>1. Дежурный режим</strong> — 30% яркости<br><strong>2. Активация</strong> — 100% при приближении на 10–15 м<br><strong>3. Эффект «шлейфа»</strong> — 55% у соседних фонарей<br><br>Свет «бежит» впереди человека. Подробнее в разделе <a href="#logic" style="color:#00d2ff;text-decoration:underline;">«Алгоритм»</a>.' },
-            { keywords: ['характер', 'параметр', 'техн', 'солнеч', 'панел', 'аккум', 'батар', 'led', 'tp4056', 'bc557', 'pir', 'вольт', 'мах'], answer: '🔧 <strong>Характеристики:</strong><br><br>☀️ Солнечная панель: <strong>7V / 3.5W</strong><br>🔋 Аккумулятор: <strong>18650 Li-Ion, 3.7V, 2200mAh</strong><br>⚡ Контроллер: <strong>TP4056</strong><br>💡 Светодиоды: <strong>4V LED SMD</strong><br>🔌 Коммутация: <strong>BC557 PNP</strong><br>📡 Датчик: <strong>PIR, до 10–15 м</strong><br><br>В разделе <a href="#specs" style="color:#00d2ff;text-decoration:underline;">«Характеристики»</a>.' },
-            { keywords: ['сеть', 'волн', 'шлейф', 'mesh', 'сосед', 'бегущ'], answer: '🌊 <strong>Эффект «бегущей волны»:</strong><br><br>• Фонарь рядом с человеком — <strong>100%</strong><br>• Два соседних — <strong>~55%</strong> (готовность)<br>• Остальные — <strong>30%</strong> (дежурный)<br><br>Смотрите демонстрацию в разделе <a href="#wave" style="color:#00d2ff;text-decoration:underline;">«Сеть»</a>.' },
-            { keywords: ['опыт', 'мир', 'берлин', 'осло', 'анадыр', 'пример', 'аналог'], answer: '🌍 <strong>Мировой опыт:</strong><br><br>🇩🇪 Берлин — экономия 60%<br>🇷🇺 Анадырь — до 73%<br>🇳🇴 Осло — радарные датчики на велодорожках<br><br>В разделе <a href="#economy" style="color:#00d2ff;text-decoration:underline;">«Эффективность»</a>.' },
-            { keywords: ['схем', 'чертеж', 'документ', 'картинк', 'фото'], answer: '📐 <strong>Документация:</strong><br><br>• Принципиальная схема подключения<br>• Чертеж корпуса<br><br>Переключайтесь между вкладками в разделе <a href="#docs" style="color:#00d2ff;text-decoration:underline;">«Документация»</a>.' },
-            { keywords: ['безопас', 'опасн', 'защит', 'нападен', 'травм', 'темн'], answer: '🛡️ <strong>Безопасность:</strong><br><br>• Яркий свет именно там, где человек<br>• Датчик срабатывает за 10–15 м<br>• Световой шлейф = непрерывная освещённая дорожка<br>• Автономная работа даже при отключении сети' },
-            { keywords: ['эколог', 'загрязн', 'небо', 'природ', 'фаун'], answer: '🌱 <strong>Экология:</strong><br><br>• Минимальное световое загрязнение неба<br>• Снижение воздействия на фауну<br>• Солнечная энергия — возобновляемая<br>• Меньше электронных отходов' },
-            { keywords: ['контакт', 'связ', 'почт', 'куп', 'заказ', 'цена', 'стоим'], answer: '📞 По вопросам сотрудничества — контакты в футере сайта. Рады обсудить внедрение! 🌳' },
-            { keywords: ['ты кто', 'кто ты', 'бот', 'помощник', 'ии', 'ai'], answer: '🤖 Я <strong>ИИ-помощник</strong> системы «Умный Свет». Отвечаю на вопросы о продукте 24/7.' },
-            { keywords: ['спасибо', 'благодар', 'круто', 'класс', 'супер'], answer: 'Рад помочь! 😊' },
-            { keywords: ['пауза', 'остановить', 'люди', 'пешеход'], answer: '⏸️ Кнопка «Пауза» в разделе «Сеть» плавно останавливает людей. Фонари продолжают освещать остановившихся.' },
-            { keywords: ['фонарь', 'светильник', 'продукт', 'систем'], answer: '💡 Автономные уличные светильники с PIR-датчиками и mesh-сетью. Три режима яркости (30% / 55% / 100%). Подробнее в разделе <a href="#specs" style="color:#00d2ff;text-decoration:underline;">«Характеристики»</a>.' }
+            {
+                keywords: ['привет', 'здравствуй', 'хай', 'добрый', 'hello', 'hi', 'прив', 'ку'],
+                answer: 'Здравствуйте! 👋 Я ИИ-помощник системы «Умный Свет».<br><br>Могу рассказать о:<br>⚙️ Принципе работы<br>🔧 Характеристиках<br>💰 Стоимости и тарифах<br>🌊 Бегущей волне<br>📐 Документации<br>📞 Как заказать<br><br>Что вас интересует?'
+            },
+            {
+                keywords: ['экономи', 'энерг', 'потреб', 'счет', 'тариф', 'выгод', 'окуп', 'деньг', 'затрат', 'дешев'],
+                answer: '💰 <strong>Экономическая эффективность:</strong><br><br>• Снижение энергопотребления на <strong>50–70%</strong><br>• Окупаемость — <strong>2–3 года</strong><br>• Стоимость светильников +30–40% к обычным LED<br>• Ниже затраты на обслуживание<br><br>Подробнее в разделе <a href="#economy" style="color:#00d2ff;text-decoration:underline;">«Эффективность»</a>.'
+            },
+            {
+                keywords: ['цена', 'стоим', 'сколько', 'тариф', 'прайс', 'заказ', 'куп', 'подписк'],
+                answer: '💰 <strong>Стоимость и тарифы:</strong><br><br>🔹 <strong>Старт</strong> — 7 000 ₽ за фонарь<br>🔹 <strong>Оптимальный</strong> — от 5 000 ₽/мес (подписка «Умный парк»)<br>🔹 <strong>Сеть</strong> — от 20 000 ₽/мес (для городов)<br><br>Нажмите <strong>«Заказать»</strong> — оставите заявку.<br><br>Подробнее в разделе <a href="#price" style="color:#00d2ff;text-decoration:underline;">«Стоимость»</a>.'
+            },
+            {
+                keywords: ['работ', 'принцип', 'как работает', 'алгоритм', 'режим', 'ярк', 'датчик', 'движен', 'пир', 'pir'],
+                answer: '⚙️ <strong>Как работает система:</strong><br><br><strong>1. Дежурный режим</strong> — 30% яркости<br><strong>2. Активация</strong> — 100% при приближении на 10–15 м<br><strong>3. Эффект «шлейфа»</strong> — 55% у соседних фонарей<br><br>Подробнее в разделе <a href="#logic" style="color:#00d2ff;text-decoration:underline;">«Алгоритм»</a>.'
+            },
+            {
+                keywords: ['характер', 'параметр', 'техн', 'солнеч', 'панел', 'аккум', 'батар', 'led', 'tp4056', 'bc557', 'pir', 'вольт', 'мах'],
+                answer: '🔧 <strong>Характеристики:</strong><br><br>☀️ Солнечная панель: <strong>7V / 3.5W</strong><br>🔋 Аккумулятор: <strong>18650 Li-Ion, 3.7V, 2200mAh</strong><br>⚡ Контроллер: <strong>TP4056</strong><br>💡 Светодиоды: <strong>4V LED SMD</strong><br>🔌 Коммутация: <strong>BC557 PNP</strong><br>📡 Датчик: <strong>PIR, до 10–15 м</strong><br><br>В разделе <a href="#specs" style="color:#00d2ff;text-decoration:underline;">«Характеристики»</a>.'
+            },
+            {
+                keywords: ['сеть', 'волн', 'шлейф', 'mesh', 'сосед', 'бегущ'],
+                answer: '🌊 <strong>Эффект «бегущей волны»:</strong><br><br>• Фонарь рядом с человеком — <strong>100%</strong><br>• Два соседних — <strong>~55%</strong> (готовность)<br>• Остальные — <strong>30%</strong> (дежурный)<br><br>Смотрите демонстрацию в разделе <a href="#wave" style="color:#00d2ff;text-decoration:underline;">«Сеть»</a>.'
+            },
+            {
+                keywords: ['заказ', 'заявк', 'связ', 'контакт', 'почт', 'позвон', 'сотруднич', 'партнер'],
+                answer: '📞 <strong>Как заказать:</strong><br><br>Нажмите кнопку <strong>«Заказать»</strong> в верхней части сайта или <strong>«Оставить заявку»</strong> в футере.<br><br>Заполните форму — мы свяжемся с вами в течение 1 рабочего дня.'
+            },
+            {
+                keywords: ['ты кто', 'кто ты', 'бот', 'помощник', 'ии', 'ai'],
+                answer: '🤖 Я <strong>ИИ-помощник</strong> системы «Умный Свет». Отвечаю на вопросы о продукте 24/7.'
+            },
+            {
+                keywords: ['спасибо', 'благодар', 'круто', 'класс', 'супер'],
+                answer: 'Рад помочь! 😊 Если появятся ещё вопросы — я здесь.'
+            },
+            {
+                keywords: ['пауза', 'остановить', 'люди', 'пешеход'],
+                answer: '⏸️ Кнопка «Пауза» в разделе «Сеть» плавно останавливает людей. Фонари продолжают освещать остановившихся.'
+            }
         ];
 
-        const quickSuggestions = ['Как это работает?', 'Какая экономия?', 'Характеристики', 'Мировой опыт', 'Показать схему', 'Бегущая волна'];
+        const quickSuggestions = ['Как это работает?', 'Сколько стоит?', 'Характеристики', 'Как заказать?', 'Показать схему', 'Бегущая волна'];
 
         function normalizeText(text) {
             return text.toLowerCase().replace(/[^\wа-яё\s]/gi, '').replace(/\s+/g, ' ').trim();
@@ -2418,7 +2607,7 @@
             
             if (bestMatch && bestScore > 3) return bestMatch.answer;
             
-            return '🤔 Не уверен, что понял. Попробуйте:<br><br>• «Как работает система?»<br>• «Сколько экономит?»<br>• «Какие характеристики?»<br>• «Что такое бегущая волна?»<br>• «Покажи схему»<br><br>Или выберите вопрос ниже 👇';
+            return '🤔 Не уверен, что понял. Попробуйте:<br><br>• «Как работает система?»<br>• «Сколько стоит?»<br>• «Как заказать?»<br>• «Что такое бегущая волна?»<br><br>Или выберите вопрос ниже 👇';
         }
 
         function addMessage(text, sender) {
@@ -2482,7 +2671,7 @@
             aiWidget.classList.toggle('open', isChatOpen);
             if (isChatOpen && aiMessages.children.length === 0) {
                 setTimeout(() => {
-                    addMessage('Здравствуйте! 👋 Я <strong>ИИ-помощник</strong> системы «Умный Свет».<br><br>Могу рассказать о принципе работы, характеристиках, экономии, мировом опыте или помочь с навигацией по сайту.<br><br>Что вас интересует?', 'bot');
+                    addMessage('Здравствуйте! 👋 Я <strong>ИИ-помощник</strong> системы «Умный Свет».<br><br>Могу рассказать о принципе работы, характеристиках, стоимости или помочь с заказом.<br><br>Что вас интересует?', 'bot');
                     renderSuggestions();
                 }, 400);
             }
@@ -2498,6 +2687,9 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && isChatOpen) toggleChat();
         });
+
+        console.log('✅ Сайт «Умный свет» загружен');
+        console.log('📧 Почта для заявок:', ORDER_EMAIL);
     </script>
 </body>
 </html>
