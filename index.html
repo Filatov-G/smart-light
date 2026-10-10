@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Умный Свет | Адаптивная система освещения для городских парков</title>
-    <link rel="icon" href="favicon.ico">
+    <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
 
@@ -980,7 +980,6 @@
         .img-placeholder svg { width: 40px; height: 40px; fill: #4a5065; margin-bottom: 1rem; }
         .image-container img[src=""] { display: none; }
 
-        /* ПАНЕЛЬ УПРАВЛЕНИЯ ФОТО */
         .upload-panel {
             position: fixed; bottom: 20px; right: 20px;
             background: linear-gradient(145deg, rgba(35, 42, 60, 0.95) 0%, rgba(25, 30, 45, 0.95) 100%);
@@ -1183,6 +1182,11 @@
         .order-form-submit:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 35px rgba(0, 210, 255, 0.55);
+        }
+        .order-form-submit:disabled {
+            opacity: 0.6;
+            cursor: wait;
+            transform: none;
         }
         .order-form-note {
             text-align: center;
@@ -1454,7 +1458,6 @@
         }
         .ai-send svg { width: 18px; height: 18px; fill: #fff; margin-left: 2px; }
 
-        /* МОДАЛЬНОЕ ОКНО АДМИНА */
         .admin-modal {
             position: fixed;
             inset: 0;
@@ -2100,7 +2103,6 @@
         </div>
     </section>
 
-    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ ФОТО (ВСЕГДА ВИДНА) -->
     <div class="upload-panel" id="uploadPanel">
         <div class="admin-badge" id="adminBadge">
             <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
@@ -2250,7 +2252,7 @@
         // =========================================================
         // НАСТРОЙКИ
         // =========================================================
-        const ORDER_EMAIL = 'filatovgrigorii11072010@yandex.ru'; // ← ЗАМЕНИТЕ НА СВОЮ ПОЧТУ
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xaeqjold';
         const DEV_CODE = 'Формула успеха';
         const STORAGE_KEYS = {
             schema: 'smartLight_schema',
@@ -2480,7 +2482,7 @@
             }
         });
 
-        // --- 7. ЗАГРУЗКА ФОТО (localStorage) ---
+        // --- 7. ЗАГРУЗКА ФОТО ---
         function restoreImages() {
             ['schema', 'drawing'].forEach(type => {
                 const stored = localStorage.getItem(STORAGE_KEYS[type]);
@@ -2659,7 +2661,7 @@
 
         updateAdminUI();
 
-        // --- 9. МОДАЛЬНОЕ ОКНО ЗАКАЗА ---
+        // --- 9. МОДАЛЬНОЕ ОКНО ЗАКАЗА + ФОРМSPREE ---
         const orderModal = document.getElementById('orderModal');
         const orderModalClose = document.getElementById('orderModalClose');
         const orderForm = document.getElementById('orderForm');
@@ -2694,7 +2696,7 @@
 
         document.getElementById('heroOrderBtn').addEventListener('click', () => openOrderModal('Главная страница'));
 
-        orderForm.addEventListener('submit', (e) => {
+        orderForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const name = document.getElementById('orderName').value.trim();
@@ -2708,23 +2710,42 @@
                 return;
             }
             
-            const subject = encodeURIComponent('Заявка на «Умный свет»');
-            const body = encodeURIComponent(
-                `Новая заявка с сайта «Умный свет»:\n\n` +
-                `Имя: ${name}\n` +
-                `Телефон: ${phone}\n` +
-                `Город: ${city || '—'}\n` +
-                `Количество фонарей: ${count || '—'}\n` +
-                `Комментарий: ${comment || '—'}\n\n` +
-                `Отправлено: ${new Date().toLocaleString('ru-RU')}`
-            );
+            // Блокируем кнопку
+            const submitBtn = orderForm.querySelector('.order-form-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
             
-            window.location.href = `mailto:${ORDER_EMAIL}?subject=${subject}&body=${body}`;
-            
-            orderForm.style.display = 'none';
-            orderFormSuccess.classList.add('show');
-            
-            setTimeout(() => { orderForm.reset(); }, 3000);
+            try {
+                const response = await fetch(FORMSPREE_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        phone: phone,
+                        city: city || '—',
+                        count: count || '—',
+                        comment: comment || '—',
+                        _subject: '🔔 Новая заявка с сайта «Умный свет»'
+                    })
+                });
+                
+                if (response.ok) {
+                    orderForm.style.display = 'none';
+                    orderFormSuccess.classList.add('show');
+                    setTimeout(() => { orderForm.reset(); }, 3000);
+                } else {
+                    throw new Error('Ошибка отправки');
+                }
+            } catch (error) {
+                alert('Не удалось отправить заявку. Попробуйте позже или свяжитесь по телефону.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
 
         // --- 10. ИИ-ПОМОЩНИК ---
@@ -2765,7 +2786,7 @@
             },
             {
                 keywords: ['заказ', 'заявк', 'связ', 'контакт', 'почт', 'позвон', 'сотруднич', 'партнер'],
-                answer: '📞 <strong>Как заказать:</strong><br><br>Нажмите кнопку <strong>«Заказать»</strong> в верхней части сайта или <strong>«Оставить заявку»</strong> в футере.<br><br>Заполните форму — мы свяжемся с вами в течение 1 рабочего дня.'
+                answer: '📞 <strong>Как заказать:</strong><br><br>Нажмите кнопку <strong>«Заказать»</strong> в верхней части сайта или <strong>«Оставить заявку»</strong> в футере.<br><br>Заполните форму — заявка <strong>мгновенно уйдёт на нашу почту</strong>, и мы свяжемся с вами в течение 1 рабочего дня.'
             },
             {
                 keywords: ['ты кто', 'кто ты', 'бот', 'помощник', 'ии', 'ai'],
@@ -2888,7 +2909,8 @@
         });
 
         console.log('✅ Сайт «Умный свет» загружен');
-        console.log('📧 Почта для заявок:', ORDER_EMAIL);
+        console.log('📧 Formspree endpoint:', FORMSPREE_ENDPOINT);
+        console.log('🎯 Заявки автоматически уходят на почту через Formspree');
     </script>
 </body>
 </html>
