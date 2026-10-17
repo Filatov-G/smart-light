@@ -1878,7 +1878,7 @@
                             <div class="boost-content">
                                 <div class="boost-title">⚡ Ускоренная</div>
                                 <div class="boost-desc">Ответ в течение 6 часов</div>
-                                <div class="boost-price">+25 ₽</div>
+                                <div class="boost-price">+50 ₽</div>
                             </div>
                         </label>
                         <label class="boost-option">
@@ -1886,7 +1886,7 @@
                             <div class="boost-content">
                                 <div class="boost-title">🚀 Экспресс</div>
                                 <div class="boost-desc">Ответ в течение 3 часов</div>
-                                <div class="boost-price">+50 ₽</div>
+                                <div class="boost-price">+100 ₽</div>
                             </div>
                         </label>
                     </div>
@@ -2239,8 +2239,8 @@
             currentBoostPrice = price;
             currentBoostTime = time;
             currentBoostLabel = selected.value === 'standard' ? 'Стандартная' :
-                                selected.value === 'fast' ? '⚡ Ускоренная (+25 ₽)' :
-                                '🚀 Экспресс (+50 ₽)';
+                                selected.value === 'fast' ? '⚡ Ускоренная (+50 ₽)' :
+                                '🚀 Экспресс (+100 ₽)';
             
             if (price === 0) {
                 boostTotalEl.innerHTML = `Итого за услугу: <strong>0 ₽</strong> (ответ в течение ${time})`;
@@ -2425,7 +2425,7 @@
             },
             {
                 keywords: ['ускор', 'boost', 'быстр', 'экспресс', 'оплат', 'доплат'],
-                answer: '⚡ <strong>Ускоренная обработка заявки:</strong><br><br>• <strong>Стандартная</strong> — бесплатно, ответ за 24 ч<br>• <strong>⚡ Ускоренная</strong> — +25 ₽, ответ за 6 ч<br>• <strong>🚀 Экспресс</strong> — +50 ₽, ответ за 3 ч<br><br>Выбирается прямо в форме заявки. Нажмите <strong>«Заказать»</strong>.'
+                answer: '⚡ <strong>Ускоренная обработка заявки:</strong><br><br>• <strong>Стандартная</strong> — бесплатно, ответ за 24 ч<br>• <strong>⚡ Ускоренная</strong> — +50 ₽, ответ за 6 ч<br>• <strong>🚀 Экспресс</strong> — +100 ₽, ответ за 3 ч<br><br>Выбирается прямо в форме заявки. Нажмите <strong>«Заказать»</strong>.'
             },
             {
                 keywords: ['заказ', 'заявк', 'связ', 'контакт', 'почт', 'позвон', 'сотруднич', 'партнер'],
