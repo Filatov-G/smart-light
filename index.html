@@ -884,48 +884,6 @@
             .contract-grid { grid-template-columns: 1fr; }
         }
 
-        .docs-section { padding: 6rem 5%; max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--border-color); }
-        .tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; }
-        .tab-btn {
-            padding: 1rem 2rem;
-            background: rgba(30, 35, 50, 0.6);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            border-radius: 50px;
-            font-family: inherit;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .tab-btn.active { background: var(--accent-cyan); color: #000; border-color: var(--accent-cyan); box-shadow: 0 0 20px var(--accent-glow); }
-        .tab-content { display: none; animation: fadeIn 0.5s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .image-container {
-            max-width: 900px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            background: rgba(20, 25, 38, 0.9);
-            position: relative;
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .image-container img { width: 100%; height: auto; display: block; opacity: 0.95; transition: var(--transition); }
-        .image-container:hover img { opacity: 1; }
-        .img-placeholder {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #5a6075; font-size: 0.9rem; text-align: center;
-            padding: 2rem; z-index: 0;
-        }
-        .img-placeholder svg { width: 40px; height: 40px; fill: #4a5065; margin-bottom: 1rem; }
-        .image-container img[src=""], .image-container img:not([src]) { display: none; }
-
         footer {
             padding: 4rem 5% 2rem;
             background: rgba(5, 8, 15, 0.9);
@@ -1411,8 +1369,6 @@
 
         @media (max-width: 576px) {
             .hero-stats { flex-direction: column; gap: 1.5rem; align-items: center; }
-            .tabs { flex-direction: column; align-items: center; }
-            .tab-btn { width: 100%; max-width: 300px; }
             .sim-btn, .order-btn { font-size: 0.75rem; padding: 0.8rem 1.2rem; }
             .wave-demo { height: 260px; padding: 0 2%; }
             .wave-lamp-head { width: 30px; height: 20px; }
@@ -1440,6 +1396,7 @@
             100% { left: 110%; opacity: 0; }
         }
         @keyframes preparePulse { from { opacity: 0.45; } to { opacity: 0.7; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -1457,7 +1414,6 @@
             <a href="#wave">Сеть</a>
             <a href="#economy">Эффективность</a>
             <a href="#contract">Контракт</a>
-            <a href="#docs">Схемы</a>
         </div>
     </nav>
 
@@ -1857,42 +1813,6 @@
         </div>
     </section>
 
-    <section id="docs" class="docs-section">
-        <div class="section-header reveal">
-            <h2>Техническая документация</h2>
-            <p>Схемы подключения и чертежи корпуса</p>
-        </div>
-
-        <div class="tabs reveal">
-            <button class="tab-btn active" onclick="switchTab(event, 'tab-schema')">Принципиальная схема</button>
-            <button class="tab-btn" onclick="switchTab(event, 'tab-drawing')">Чертеж корпуса</button>
-        </div>
-
-        <div id="tab-schema" class="tab-content active reveal">
-            <div class="image-container">
-                <div class="img-placeholder" id="placeholder-schema">
-                    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                    <p>Схема не загружена.<br>Поместите файл <strong>schema.jpg</strong> рядом с index.html</p>
-                </div>
-                <img id="img-schema" src="schema.jpg" alt="Принципиальная схема"
-                     onload="this.style.display='block'; document.getElementById('placeholder-schema').style.display='none';"
-                     onerror="this.style.display='none';">
-            </div>
-        </div>
-
-        <div id="tab-drawing" class="tab-content reveal">
-            <div class="image-container">
-                <div class="img-placeholder" id="placeholder-drawing">
-                    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                    <p>Чертеж не загружен.<br>Поместите файл <strong>drawing.jpg</strong> рядом с index.html</p>
-                </div>
-                <img id="img-drawing" src="drawing.jpg" alt="Чертеж корпуса"
-                     onload="this.style.display='block'; document.getElementById('placeholder-drawing').style.display='none';"
-                     onerror="this.style.display='none';">
-            </div>
-        </div>
-    </section>
-
     <footer>
         <div class="footer-logo">УМНЫЙ<span>СВЕТ</span></div>
         <p class="footer-text">Адаптивная система освещения для городских парков. Инвестиции в качество жизни.</p>
@@ -2105,15 +2025,7 @@
             });
         }
 
-        // --- 3. ТАБЫ ---
-        function switchTab(event, tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        // --- 4. КАРУСЕЛЬ HERO ---
+        // --- 3. КАРУСЕЛЬ HERO ---
         const heroSlides = document.querySelectorAll('.hero-slide');
         const heroDots = document.querySelectorAll('.hero-carousel-dot');
         const heroPrev = document.getElementById('heroCarouselPrev');
@@ -2135,7 +2047,7 @@
             dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slideTarget)));
         });
 
-        // --- 5. СИМУЛЯЦИЯ ФОНАРЯ ---
+        // --- 4. СИМУЛЯЦИЯ ФОНАРЯ ---
         const simBtn = document.getElementById('simBtn');
         const lampSim = document.getElementById('lampSim');
         const pirSensor = document.getElementById('pirSensor');
@@ -2188,7 +2100,7 @@
             returnTimeout = setTimeout(resetToEco, timeLeft * 1000);
         }
 
-        // --- 6. БЕГУЩАЯ ВОЛНА ---
+        // --- 5. БЕГУЩАЯ ВОЛНА ---
         const waveDemo = document.getElementById('waveDemo');
         const waveBtn = document.getElementById('waveBtn');
         const waveLamps = document.querySelectorAll('.wave-lamp');
@@ -2299,7 +2211,7 @@
             }
         });
 
-        // --- 7. МОДАЛЬНОЕ ОКНО ЗАКАЗА + БЕТА-ОПЛАТА + FORMSPREE ---
+        // --- 6. МОДАЛЬНОЕ ОКНО ЗАКАЗА + БЕТА-ОПЛАТА + FORMSPREE ---
         const orderModal = document.getElementById('orderModal');
         const orderModalClose = document.getElementById('orderModalClose');
         const orderForm = document.getElementById('orderForm');
@@ -2471,7 +2383,7 @@
             }
         }
 
-        // --- 8. ИИ-ПОМОЩНИК ---
+        // --- 7. ИИ-ПОМОЩНИК ---
         const aiWidget = document.getElementById('aiWidget');
         const aiToggle = document.getElementById('aiToggle');
         const aiCloseBtn = document.getElementById('aiCloseBtn');
@@ -2642,6 +2554,7 @@
         console.log('✅ Сайт «Умный свет» загружен');
         console.log('📧 Formspree endpoint:', FORMSPREE_ENDPOINT);
         console.log('📄 Раздел «Годовой контракт» добавлен');
+        console.log('🗑️ Раздел «Техническая документация» удалён');
     </script>
 </body>
 </html>
