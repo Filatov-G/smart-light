@@ -618,11 +618,11 @@ body.modal-open{overflow:hidden}
   <div class="nav-links" id="navLinks">
     <a href="#problem">Проблема</a>
     <a href="#specs">Характеристики</a>
-    <a href="#price">Цены</a>
     <a href="#logic">Алгоритм</a>
     <a href="#wave">Сеть</a>
     <a href="#economy">Эффективность</a>
     <a href="#contract">Контракт</a>
+    <a href="#price">Цены</a>
   </div>
   <button class="nav-cta" type="button" onclick="openOrderModal('Общий запрос')">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
@@ -676,11 +676,8 @@ body.modal-open{overflow:hidden}
             <stop offset="1" stop-color="#00d2ff" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <!-- Световой конус -->
         <polygon class="light-cone" points="150,210 30,470 270,470" fill="url(#coneGrad)"/>
-        <!-- Корпус -->
         <rect x="90" y="60" width="120" height="150" rx="20" fill="url(#lampBody)" stroke="#3a4055" stroke-width="2"/>
-        <!-- Солнечная панель -->
         <rect x="100" y="80" width="100" height="55" rx="8" fill="#0a0a0a" stroke="#3a4055"/>
         <g stroke="#2a2f42" stroke-width="1">
           <line x1="110" y1="80" x2="110" y2="135"/>
@@ -693,13 +690,9 @@ body.modal-open{overflow:hidden}
           <line x1="100" y1="110" x2="200" y2="110"/>
           <line x1="100" y1="125" x2="200" y2="125"/>
         </g>
-        <!-- PIR-датчик -->
         <circle class="pir" cx="195" cy="70" r="5"/>
-        <!-- LED-полоса -->
         <rect class="led" x="110" y="175" width="80" height="15" rx="5"/>
-        <!-- Шест -->
         <rect x="140" y="210" width="20" height="200" fill="url(#poleGrad)" stroke="#3a4055" stroke-width="1"/>
-        <!-- Пешеход -->
         <g class="pedestrian-svg">
           <rect x="150" y="380" width="20" height="40" rx="10" fill="rgba(255,255,255,.85)"/>
           <rect x="152" y="420" width="16" height="30" rx="5" fill="rgba(255,255,255,.65)"/>
@@ -724,16 +717,14 @@ body.modal-open{overflow:hidden}
   <div class="problem-grid">
     <div class="problem-text reveal">
       <h2>Актуальность</h2>
-      <p>Современные городские парки сталкиваются с противоречием: с одной стороны, необходимо обеспечить безопасность и комфорт посетителей в тёмное время суток, с другой — растущие тарифы на электроэнергию и требования экологии диктуют необходимость экономии.</p>
-      <p>Традиционное освещение работает по фиксированному графику: оно либо горит в полную силу всю ночь (перерасход энергии, световое загрязнение), либо выключается рано (риск травм и нападений).</p>
+      <p>Паркам нужен свет ночью — но постоянное освещение на полной яркости перерасходует энергию и создаёт световое загрязнение. А раннее отключение повышает риск травм и нападений.</p>
       <blockquote class="problem-quote">
-        «Адаптивное освещение решает эту дилемму: свет есть всегда, но он становится ярким только там и тогда, где и когда это действительно нужно.»
+        «Адаптивное освещение решает дилемму: свет есть всегда, но ярким он становится только там и тогда, где и когда это действительно нужно.»
       </blockquote>
     </div>
     <div class="problem-text reveal">
       <h2>Решение</h2>
-      <p>Установка светодиодных светильников, оснащённых интегрированными датчиками движения (микроволновыми или инфракрасными) и модулями связи.</p>
-      <p>Светильники объединяются в единую сеть, что позволяет создавать «бегущую волну» света перед идущим человеком, обеспечивая максимальный комфорт и безопасность.</p>
+      <p>LED-светильники с датчиками движения и модулями связи объединяются в единую сеть и создают «бегущую волну» света перед идущим человеком.</p>
     </div>
   </div>
 </section>
@@ -750,59 +741,6 @@ body.modal-open{overflow:hidden}
     <div class="spec-card reveal" style="transition-delay:.3s"><div class="spec-icon" aria-hidden="true">💡</div><h3>Светодиоды</h3><div class="spec-value">4V LED</div><p class="spec-desc">Яркая SMD-лента с низким энергопотреблением и широким углом свечения.</p></div>
     <div class="spec-card reveal" style="transition-delay:.4s"><div class="spec-icon" aria-hidden="true">🔌</div><h3>Коммутация</h3><div class="spec-value">BC557 PNP</div><p class="spec-desc">Быстрое переключение режимов яркости без задержек и мерцания.</p></div>
     <div class="spec-card reveal" style="transition-delay:.5s"><div class="spec-icon" aria-hidden="true">📡</div><h3>Датчик движения</h3><div class="spec-value">PIR Сенсор</div><p class="spec-desc">Высокая чувствительность, обнаружение на расстоянии до 10–15 метров.</p></div>
-  </div>
-</section>
-
-<section id="price" class="price-section">
-  <div class="section-header reveal">
-    <h2>Стоимость и тарифы</h2>
-    <p>Гибкая система: разовая покупка комплекта под задачу парка</p>
-  </div>
-  <div class="price-grid">
-    <div class="price-card reveal">
-      <h3>Старт</h3>
-      <p class="price-desc">Для небольших парков и пилотных проектов</p>
-      <div class="price-amount">45 000 <small>₽ / шт.</small></div>
-      <div class="price-period">за один фонарь</div>
-      <ul class="price-features">
-        <li>Светильники с датчиками</li>
-        <li>Солнечные панели + аккумуляторы</li>
-        <li>Базовые настройки яркости</li>
-        <li>Гарантия 1 год</li>
-        <li>Инструкция по монтажу</li>
-      </ul>
-      <button class="price-btn" type="button" onclick="openOrderModal('Старт (45 000 ₽/шт.)')">Заказать</button>
-    </div>
-    <div class="price-card featured reveal" style="transition-delay:.1s">
-      <h3>Оптимальный</h3>
-      <p class="price-desc">Базовый тариф для городских парков и аллей</p>
-      <div class="price-amount">250 000 – 500 000 <small>₽</small></div>
-      <div class="price-period">проект под задачу</div>
-      <ul class="price-features">
-        <li>Всё из тарифа «Старт»</li>
-        <li>Расширенная комплектация</li>
-        <li>Аналитика и отчёты</li>
-        <li>Мониторинг 24/7</li>
-        <li>Плановое ТО</li>
-        <li>Приоритетная поддержка</li>
-      </ul>
-      <button class="price-btn" type="button" onclick="openOrderModal('Оптимальный (250 000 – 500 000 ₽)')">Заказать</button>
-    </div>
-    <div class="price-card reveal" style="transition-delay:.2s">
-      <h3>Сеть</h3>
-      <p class="price-desc">Для крупных территорий и «умных городов»</p>
-      <div class="price-amount">800 000 – 5 000 000 <small>₽</small></div>
-      <div class="price-period">комплексный проект</div>
-      <ul class="price-features">
-        <li>Всё из тарифа «Оптимальный»</li>
-        <li>Интеграция с другими системами</li>
-        <li>API для городских служб</li>
-        <li>Персональный менеджер</li>
-        <li>Кастомизация под заказчика</li>
-        <li>Обучение персонала</li>
-      </ul>
-      <button class="price-btn" type="button" onclick="openOrderModal('Сеть (800 000 – 5 000 000 ₽)')">Заказать</button>
-    </div>
   </div>
 </section>
 
@@ -917,6 +855,59 @@ body.modal-open{overflow:hidden}
   <div class="contract-cta reveal">
     <p>Готовы обсудить условия контракта для вашего города?</p>
     <button class="price-btn contract-btn" type="button" onclick="openOrderModal('Годовой контракт с администрацией')">Запросить условия контракта</button>
+  </div>
+</section>
+
+<section id="price" class="price-section">
+  <div class="section-header reveal">
+    <h2>Стоимость и тарифы</h2>
+    <p>Гибкая система: разовая покупка комплекта под задачу парка</p>
+  </div>
+  <div class="price-grid">
+    <div class="price-card reveal">
+      <h3>Старт</h3>
+      <p class="price-desc">Для небольших парков и пилотных проектов</p>
+      <div class="price-amount">45 000 <small>₽ / шт.</small></div>
+      <div class="price-period">за один фонарь</div>
+      <ul class="price-features">
+        <li>Светильники с датчиками</li>
+        <li>Солнечные панели + аккумуляторы</li>
+        <li>Базовые настройки яркости</li>
+        <li>Гарантия 1 год</li>
+        <li>Инструкция по монтажу</li>
+      </ul>
+      <button class="price-btn" type="button" onclick="openOrderModal('Старт (45 000 ₽/шт.)')">Заказать</button>
+    </div>
+    <div class="price-card featured reveal" style="transition-delay:.1s">
+      <h3>Оптимальный</h3>
+      <p class="price-desc">Базовый тариф для городских парков и аллей</p>
+      <div class="price-amount">250 000 – 500 000 <small>₽</small></div>
+      <div class="price-period">проект под задачу</div>
+      <ul class="price-features">
+        <li>Всё из тарифа «Старт»</li>
+        <li>Расширенная комплектация</li>
+        <li>Аналитика и отчёты</li>
+        <li>Мониторинг 24/7</li>
+        <li>Плановое ТО</li>
+        <li>Приоритетная поддержка</li>
+      </ul>
+      <button class="price-btn" type="button" onclick="openOrderModal('Оптимальный (250 000 – 500 000 ₽)')">Заказать</button>
+    </div>
+    <div class="price-card reveal" style="transition-delay:.2s">
+      <h3>Сеть</h3>
+      <p class="price-desc">Для крупных территорий и «умных городов»</p>
+      <div class="price-amount">800 000 – 5 000 000 <small>₽</small></div>
+      <div class="price-period">комплексный проект</div>
+      <ul class="price-features">
+        <li>Всё из тарифа «Оптимальный»</li>
+        <li>Интеграция с другими системами</li>
+        <li>API для городских служб</li>
+        <li>Персональный менеджер</li>
+        <li>Кастомизация под заказчика</li>
+        <li>Обучение персонала</li>
+      </ul>
+      <button class="price-btn" type="button" onclick="openOrderModal('Сеть (800 000 – 5 000 000 ₽)')">Заказать</button>
+    </div>
   </div>
 </section>
 
@@ -1083,11 +1074,8 @@ const $$ = (s, ctx = document) => [...ctx.querySelectorAll(s)];
 /* ---------- NAV ---------- */
 const navbar = $('#navbar');
 const navToggle = $('#navToggle');
-let lastScrollY = 0;
 window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  navbar.classList.toggle('scrolled', y > 50);
-  lastScrollY = y;
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
 
 navToggle?.addEventListener('click', () => {
@@ -1124,7 +1112,7 @@ const lampStage = $('#lampStage');
 const simBtn = $('#simBtn');
 const timerDisplay = $('#timerDisplay');
 const timerBar = $('#timerBar');
-let simTimer = null, simEnd = 0, simRaf = null;
+let simRaf = null, simEnd = 0;
 
 function resetLamp() {
   lampStage.classList.remove('bright', 'moving');
@@ -1137,8 +1125,7 @@ function resetLamp() {
 
 function tickTimer() {
   const left = Math.max(0, simEnd - performance.now());
-  const total = 3000;
-  const pct = left / total;
+  const pct = left / 3000;
   timerBar.style.transform = `scaleX(${pct})`;
   const sec = Math.ceil(left / 1000);
   timerDisplay.firstChild.textContent = `Возврат в экономию: ${sec}с `;
@@ -1232,7 +1219,6 @@ simBtn?.addEventListener('click', () => {
   }
 
   if (reducedMotion) {
-    // Статичная картинка: все фонари в дежурном режиме, пешеходы скрыты
     render();
   } else {
     rafId = requestAnimationFrame(loop);
@@ -1358,7 +1344,7 @@ window.openOrderModal = function (tariffName) {
 
 orderForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  if ($('#hpField').value) return; // honeypot
+  if ($('#hpField').value) return;
   if (!validateForm()) return;
   if (boost.price > 0) {
     $('#paymentAmount').textContent = `${boost.price} ₽`;
@@ -1436,7 +1422,6 @@ async function sendOrder(isPaid) {
     orderSuccess.classList.add('show');
     setTimeout(() => { orderForm.reset(); updateBoost(); }, 3000);
   } catch (err) {
-    // inline-сообщение вместо alert
     let msg = $('#orderSubmitBtn').parentElement.querySelector('.send-error');
     if (!msg) {
       msg = document.createElement('p');
@@ -1459,7 +1444,6 @@ async function sendOrder(isPaid) {
 (function initAI() {
   const widget = $('#aiWidget');
   const toggle = $('#aiToggle');
-  const panel = $('#aiPanel');
   const closeBtn = $('#aiCloseBtn');
   const clearBtn = $('#aiClearBtn');
   const messages = $('#aiMessages');
