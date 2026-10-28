@@ -426,22 +426,7 @@ body.modal-open{overflow:hidden}
 .form-textarea{resize:vertical;min-height:80px}
 .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
 
-.boost-options{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:12px}
-.boost-option{position:relative;display:block;cursor:pointer}
-.boost-option input{position:absolute;opacity:0;pointer-events:none}
-.boost-content{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:12px 16px;background:rgba(255,255,255,.04);border:1.5px solid var(--border);
-  border-radius:var(--r-sm);transition:border-color var(--t-fast),background var(--t-fast),box-shadow var(--t-fast);
-}
-.boost-option:hover .boost-content{border-color:rgba(0,210,255,.4);background:rgba(0,210,255,.05)}
-.boost-option input:checked + .boost-content{border-color:var(--cyan);background:rgba(0,210,255,.1);box-shadow:0 0 0 3px rgba(0,210,255,.12)}
-.boost-option input:focus-visible + .boost-content{outline:2px solid var(--cyan);outline-offset:2px}
-.boost-title{font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
-.boost-desc{font-size:.8rem;color:var(--muted);flex:1;text-align:left}
-.boost-price{font-weight:800;font-size:.9rem;color:var(--green);flex-shrink:0}
-.boost-option input:checked + .boost-content .boost-price{color:var(--cyan)}
-.boost-total{padding:10px 14px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.25);border-radius:10px;font-size:.85rem;color:var(--muted);text-align:center;margin-top:8px}
+.boost-total{padding:10px 14px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.25);border-radius:10px;font-size:.85rem;color:var(--muted);text-align:center}
 .boost-total strong{color:var(--green);font-weight:800;font-size:1rem}
 
 .form-submit{
@@ -462,39 +447,6 @@ body.modal-open{overflow:hidden}
 }
 .success-state h3{color:#fff;margin-bottom:.4rem;font-size:1.2rem}
 .success-state p{color:var(--muted);font-size:.92rem}
-
-/* PAYMENT */
-.payment-badge{
-  display:inline-block;padding:.3rem .8rem;background:rgba(246,224,94,.15);
-  border:1px solid rgba(246,224,94,.4);color:var(--yellow);border-radius:var(--r-pill);
-  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.8rem;
-}
-.payment-demo-note{
-  font-size:.8rem;color:var(--yellow);background:rgba(246,224,94,.08);
-  border:1px dashed rgba(246,224,94,.4);border-radius:var(--r-sm);padding:.6rem .8rem;
-  margin-bottom:1rem;text-align:center;
-}
-.payment-amount-box{
-  background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.3);
-  border-radius:var(--r-sm);padding:1rem;text-align:center;margin-bottom:1.2rem;
-}
-.payment-amount-box .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.2rem}
-.payment-amount-box .amount{font-size:1.9rem;font-weight:900;color:var(--green)}
-.payment-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.payment-actions{display:flex;gap:10px;margin-top:1.5rem}
-.payment-btn{flex:1;padding:1rem;border-radius:var(--r-sm);font-weight:700;font-size:.95rem;transition:transform var(--t-fast),box-shadow var(--t-fast),background var(--t-fast);border:1px solid transparent}
-.payment-btn-cancel{background:rgba(255,255,255,.06);border-color:var(--border);color:var(--muted)}
-.payment-btn-cancel:hover{background:rgba(255,255,255,.1);color:#fff}
-.payment-btn-pay{background:linear-gradient(135deg,var(--green),#00b360);color:#fff;box-shadow:0 8px 25px rgba(0,230,118,.4)}
-.payment-btn-pay:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(0,230,118,.6)}
-.payment-processing{display:none;text-align:center;padding:2rem 1rem}
-.payment-processing.show{display:block}
-.spinner{
-  width:60px;height:60px;border:4px solid rgba(0,210,255,.2);border-top-color:var(--cyan);
-  border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1.2rem;
-}
-.payment-processing h3{color:#fff;margin-bottom:.4rem;font-size:1.1rem}
-.payment-processing p{color:var(--muted);font-size:.9rem}
 
 /* ============ ИИ-ВИДЖЕТ ============ */
 .ai-widget{position:fixed;bottom:20px;right:20px;z-index:2500}
@@ -598,7 +550,6 @@ body.modal-open{overflow:hidden}
 @keyframes blink{from{opacity:1}to{opacity:.3}}
 @keyframes preparePulse{from{opacity:.45}to{opacity:.7}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes spin{to{transform:rotate(360deg)}}
 @keyframes aiPulse{0%{opacity:.6;transform:scale(1)}100%{opacity:0;transform:scale(1.3)}}
 @keyframes aiBlink{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes aiMessageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -956,22 +907,8 @@ body.modal-open{overflow:hidden}
         <textarea class="form-textarea" id="orderComment" placeholder="Расскажите о вашей задаче..."></textarea>
       </div>
       <div class="form-group">
-        <label>Скорость обработки заявки</label>
-        <div class="boost-options">
-          <label class="boost-option">
-            <input type="radio" name="boost" value="standard" data-price="0" data-time="24 ч" checked>
-            <div class="boost-content"><div class="boost-title">Стандартная</div><div class="boost-desc">Ответ в течение 24 часов</div><div class="boost-price">Бесплатно</div></div>
-          </label>
-          <label class="boost-option">
-            <input type="radio" name="boost" value="fast" data-price="50" data-time="6 часов">
-            <div class="boost-content"><div class="boost-title">⚡ Ускоренная</div><div class="boost-desc">Ответ в течение 6 часов</div><div class="boost-price">+50 ₽</div></div>
-          </label>
-          <label class="boost-option">
-            <input type="radio" name="boost" value="express" data-price="100" data-time="3 часа">
-            <div class="boost-content"><div class="boost-title">🚀 Экспресс</div><div class="boost-desc">Ответ в течение 3 часов</div><div class="boost-price">+100 ₽</div></div>
-          </label>
-        </div>
-        <div class="boost-total" id="boostTotal">Итого за услугу: <strong>0 ₽</strong> (ответ в течение 24 ч)</div>
+        <label>Срок обработки заявки</label>
+        <div class="boost-total" id="boostTotal">Ответ в течение <strong>24 часов</strong>, бесплатно</div>
       </div>
       <button type="submit" class="form-submit" id="orderSubmitBtn">Отправить заявку</button>
       <p class="form-note">Нажимая кнопку, вы соглашаетесь на обработку данных</p>
@@ -980,54 +917,6 @@ body.modal-open{overflow:hidden}
       <div class="success-icon">✓</div>
       <h3>Заявка отправлена!</h3>
       <p>Мы свяжемся с вами в течение 1 рабочего дня для уточнения деталей.</p>
-    </div>
-  </div>
-</div>
-
-<!-- МОДАЛКА ОПЛАТЫ -->
-<div class="modal" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
-  <div class="modal-content" style="max-width:440px">
-    <div class="modal-header">
-      <div class="payment-badge">Демо-режим</div>
-      <h3 id="payTitle">Оплата заявки</h3>
-      <p>Демонстрация платёжной формы</p>
-      <button class="modal-close" type="button" data-close aria-label="Закрыть">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-      </button>
-    </div>
-    <div class="payment-demo-note">Это демонстрация. Реальная оплата не производится, данные карты не отправляются.</div>
-    <div class="payment-amount-box">
-      <div class="label">К оплате</div>
-      <div class="amount" id="paymentAmount">0 ₽</div>
-    </div>
-    <div id="paymentForm">
-      <div class="form-group">
-        <label for="payCard">Номер карты</label>
-        <input type="text" class="form-input" id="payCard" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric" value="4276 1600 1234 5678" style="font-family:'Courier New',monospace">
-      </div>
-      <div class="payment-row">
-        <div class="form-group">
-          <label for="payExpiry">Срок</label>
-          <input type="text" class="form-input" id="payExpiry" placeholder="ММ/ГГ" maxlength="5" value="12/28" style="font-family:'Courier New',monospace">
-        </div>
-        <div class="form-group">
-          <label for="payCvc">CVC</label>
-          <input type="text" class="form-input" id="payCvc" placeholder="000" maxlength="3" value="123" style="font-family:'Courier New',monospace">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="payName">Владелец карты</label>
-        <input type="text" class="form-input" id="payName" placeholder="IVAN IVANOV" value="IVAN IVANOV">
-      </div>
-    </div>
-    <div class="payment-processing" id="paymentProcessing">
-      <div class="spinner"></div>
-      <h3>Обработка платежа...</h3>
-      <p>Подождите, идёт проверка данных</p>
-    </div>
-    <div class="payment-actions" id="paymentActions">
-      <button type="button" class="payment-btn payment-btn-cancel" id="paymentCancel">Отмена</button>
-      <button type="button" class="payment-btn payment-btn-pay" id="paymentPay">Оплатить</button>
     </div>
   </div>
 </div>
@@ -1288,29 +1177,9 @@ document.addEventListener('keydown', (e) => {
 const orderModal = $('#orderModal');
 const orderForm = $('#orderForm');
 const orderSuccess = $('#orderSuccess');
-const boostTotalEl = $('#boostTotal');
 const orderSubmitBtn = $('#orderSubmitBtn');
 
-let boost = { price: 0, label: 'Стандартная', time: '24 ч' };
-
-function updateBoost() {
-  const sel = $('input[name="boost"]:checked');
-  if (!sel) return;
-  const price = parseInt(sel.dataset.price, 10) || 0;
-  const time = sel.dataset.time;
-  const label = sel.value === 'standard' ? 'Стандартная'
-    : sel.value === 'fast' ? '⚡ Ускоренная (+50 ₽)' : '🚀 Экспресс (+100 ₽)';
-  boost = { price, label, time };
-  if (price === 0) {
-    boostTotalEl.innerHTML = `Итого за услугу: <strong>0 ₽</strong> (ответ в течение ${time})`;
-    orderSubmitBtn.textContent = 'Отправить заявку';
-  } else {
-    boostTotalEl.innerHTML = `Итого к оплате за ускорение: <strong>+${price} ₽</strong> (ответ в течение ${time})`;
-    orderSubmitBtn.textContent = `Оплатить и отправить → ${price} ₽`;
-  }
-}
-$$('input[name="boost"]').forEach(r => r.addEventListener('change', updateBoost));
-updateBoost();
+const boost = { price: 0, label: 'Стандартная', time: '24 ч' };
 
 function showErr(input, errEl, show) {
   input.classList.toggle('error', show);
@@ -1335,7 +1204,6 @@ window.openOrderModal = function (tariffName) {
   orderForm.style.display = '';
   orderSuccess.classList.remove('show');
   orderForm.reset();
-  updateBoost();
   if (tariffName && !['Общий запрос', 'Главная страница'].includes(tariffName)) {
     $('#orderComment').value = `Интересует: ${tariffName}`;
   }
@@ -1346,45 +1214,11 @@ orderForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   if ($('#hpField').value) return;
   if (!validateForm()) return;
-  if (boost.price > 0) {
-    $('#paymentAmount').textContent = `${boost.price} ₽`;
-    $('#paymentForm').style.display = '';
-    $('#paymentProcessing').classList.remove('show');
-    $('#paymentActions').style.display = 'flex';
-    openModal($('#paymentModal'));
-  } else {
-    await sendOrder(false);
-  }
-});
-
-/* ---------- ОПЛАТА (ДЕМО) ---------- */
-const paymentModal = $('#paymentModal');
-$('#payCard').addEventListener('input', e => {
-  let v = e.target.value.replace(/\D/g, '').slice(0, 16);
-  e.target.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
-});
-$('#payExpiry').addEventListener('input', e => {
-  let v = e.target.value.replace(/\D/g, '').slice(0, 4);
-  if (v.length >= 2) v = v.slice(0, 2) + '/' + v.slice(2);
-  e.target.value = v;
-});
-$('#payCvc').addEventListener('input', e => {
-  e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
-});
-$('#paymentCancel').addEventListener('click', () => closeModal(paymentModal));
-$('#paymentPay').addEventListener('click', () => {
-  $('#paymentForm').style.display = 'none';
-  $('#paymentActions').style.display = 'none';
-  $('#paymentProcessing').classList.add('show');
-  setTimeout(async () => {
-    await sendOrder(true);
-    $('#paymentProcessing').classList.remove('show');
-    closeModal(paymentModal);
-  }, 1600);
+  await sendOrder();
 });
 
 /* ---------- ОТПРАВКА В FORMSPREE ---------- */
-async function sendOrder(isPaid) {
+async function sendOrder() {
   const name = $('#orderName').value.trim();
   const phone = $('#orderPhone').value.trim();
   const city = $('#orderCity').value.trim();
@@ -1408,27 +1242,25 @@ async function sendOrder(isPaid) {
         city: city || '—',
         count: count || '—',
         comment: comment || '—',
-        boost_type: boost.label,
-        boost_time: boost.time,
-        boost_price: boost.price === 0 ? 'Бесплатно' : `+${boost.price} ₽`,
-        payment_status: isPaid ? '✅ ОПЛАЧЕНО (демо)' : 'Не требуется',
-        _subject: boost.price > 0
-          ? `${boost.label} — заявка с сайта «Умный свет»`
-          : '🔔 Новая заявка с сайта «Умный свет»',
+        boost_type: 'Стандартная',
+        boost_time: '24 ч',
+        boost_price: 'Бесплатно',
+        payment_status: 'Не требуется',
+        _subject: '🔔 Новая заявка с сайта «Умный свет»',
       }),
     });
     if (!res.ok) throw new Error('bad response');
     orderForm.style.display = 'none';
     orderSuccess.classList.add('show');
-    setTimeout(() => { orderForm.reset(); updateBoost(); }, 3000);
+    setTimeout(() => { orderForm.reset(); }, 3000);
   } catch (err) {
-    let msg = $('#orderSubmitBtn').parentElement.querySelector('.send-error');
+    let msg = orderSubmitBtn.parentElement.querySelector('.send-error');
     if (!msg) {
       msg = document.createElement('p');
       msg.className = 'form-note send-error';
       msg.style.color = '#ff8080';
       msg.style.marginTop = '.6rem';
-      $('#orderSubmitBtn').parentElement.appendChild(msg);
+      orderSubmitBtn.parentElement.appendChild(msg);
     }
     msg.textContent = err.name === 'AbortError'
       ? 'Превышено время ожидания. Проверьте соединение и попробуйте снова.'
@@ -1467,8 +1299,8 @@ async function sendOrder(isPaid) {
       a: '🔧 <strong>Характеристики:</strong><br>☀️ Панель: <strong>7V / 3.5W</strong><br>🔋 Аккумулятор: <strong>18650 Li-Ion, 3.7V, 2200mAh</strong><br>⚡ Контроллер: <strong>TP4056</strong><br>💡 Светодиоды: <strong>4V LED SMD</strong><br>🔌 Коммутация: <strong>BC557 PNP</strong><br>📡 Датчик: <strong>PIR, до 10–15 м</strong><br><br>Раздел <a href="#specs" style="color:#00d2ff;text-decoration:underline">«Характеристики»</a>.' },
     { k: ['сеть','волн','шлейф','mesh','сосед','бегущ'],
       a: '🌊 <strong>Эффект «бегущей волны»:</strong><br>• Фонарь рядом с человеком — <strong>100%</strong><br>• Два соседних — <strong>~55%</strong><br>• Остальные — <strong>30%</strong><br><br>Смотрите демонстрацию в разделе <a href="#wave" style="color:#00d2ff;text-decoration:underline">«Сеть»</a>.' },
-    { k: ['ускор','boost','быстр','экспресс','оплат','доплат'],
-      a: '⚡ <strong>Ускоренная обработка заявки:</strong><br>• <strong>Стандартная</strong> — бесплатно, 24 ч<br>• <strong>⚡ Ускоренная</strong> — +50 ₽, 6 ч<br>• <strong>🚀 Экспресс</strong> — +100 ₽, 3 ч<br><br>Выбирается прямо в форме заявки.' },
+    { k: ['ускор','boost','быстр','экспресс','оплат','доплат','срок','обработ'],
+      a: '📞 Заявки обрабатываются в течение <strong>1 рабочего дня (24 часа)</strong>, бесплатно. Мы свяжемся с вами по указанному телефону.' },
     { k: ['заказ','заявк','связ','контакт','почт','позвон','сотруднич'],
       a: '📞 <strong>Как заказать:</strong> нажмите <strong>«Заказать»</strong> сверху или <strong>«Оставить заявку»</strong> в футере. Заполните форму — заявка уйдёт нам, мы свяжемся в течение 1 рабочего дня.' },
     { k: ['кто ты','бот','помощник','ии','ai'],
